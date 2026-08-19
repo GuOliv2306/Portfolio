@@ -1,0 +1,686 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Gustavo de Oliveira — Portfólio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=IBM+Plex+Sans:wght@300;400;500&family=IBM+Plex+Mono:wght@300;400&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0c0c0c;
+    --surface:#141414;
+    --surface-2:#1c1c1c;
+    --border:rgba(244,240,235,0.10);
+    --border-strong:rgba(244,240,235,0.22);
+    --accent:#e8601c;
+    --accent-strong:#ff7a3a;
+    /* alphas derivadas — atualizam automaticamente quando --accent muda */
+    --accent-04: color-mix(in oklch, var(--accent) 4%,  transparent);
+    --accent-06: color-mix(in oklch, var(--accent) 6%,  transparent);
+    --accent-08: color-mix(in oklch, var(--accent) 8%,  transparent);
+    --accent-dim:color-mix(in oklch, var(--accent) 15%, transparent);
+    --accent-16: color-mix(in oklch, var(--accent) 16%, transparent);
+    --accent-18: color-mix(in oklch, var(--accent) 18%, transparent);
+    --accent-22: color-mix(in oklch, var(--accent) 22%, transparent);
+    --accent-32: color-mix(in oklch, var(--accent) 32%, transparent);
+    --accent-42: color-mix(in oklch, var(--accent) 42%, transparent);
+    --accent-45: color-mix(in oklch, var(--accent) 45%, transparent);
+    --accent-55: color-mix(in oklch, var(--accent) 55%, transparent);
+    --text:#f4f0eb;
+    --text-muted:rgba(244,240,235,0.66);
+    --text-soft:rgba(244,240,235,0.34);
+    --text-faint:rgba(244,240,235,0.08);
+    --serif:'Playfair Display', Georgia, serif;
+    --sans:'IBM Plex Sans', system-ui, sans-serif;
+    --mono:'IBM Plex Mono', ui-monospace, monospace;
+    --ease:cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--bg);color:var(--text);font-family:var(--sans);font-weight:300;-webkit-font-smoothing:antialiased;line-height:1.5}
+  body{overflow-x:hidden}
+  a{color:inherit;text-decoration:none}
+  button{font:inherit;background:none;border:none;color:inherit;cursor:pointer}
+  ::selection{background:var(--accent);color:#fff}
+
+  /* ── Custom cursor v2 — ring + pin com magnetismo ──────────
+     - .cursor-follow: wrapper que translada para a posição do cursor
+     - .cursor-ring:   anel externo (escala/cor por estado)
+     - .cursor-pin:    ponto central de precisão (some no hover de CTA)
+     Estados: is-on / is-hover / is-text / is-click / is-magnet
+     Usa apenas transform/opacity → 0 reflows, GPU compositing. */
+  @media (hover:hover) and (pointer:fine){
+    *, *::before, *::after{ cursor:none !important; }
+  }
+  .cursor-follow{
+    position:fixed; top:0; left:0;
+    pointer-events:none;
+    z-index:99999;
+    opacity:0;
+    transition: opacity .3s var(--ease);
+    will-change: transform;
+    mix-blend-mode: normal;
+  }
+  .cursor-follow.is-on{ opacity:1; }
+  .cursor-ring{
+    position:absolute; top:0; left:0;
+    width:28px; height:28px;
+    border:1px solid var(--accent-55);
+    border-radius:50%;
+    transform: translate(-50%,-50%) scale(1);
+    transition: transform .55s cubic-bezier(.22,1,.36,1),
+                background-color .35s var(--ease),
+                border-color .35s var(--ease),
+                opacity .3s var(--ease);
+    will-change: transform;
+  }
+  .cursor-pin{
+    position:absolute; top:0; left:0;
+    width:4px; height:4px;
+    border-radius:50%;
+    background:var(--accent);
+    transform: translate(-50%,-50%) scale(1);
+    transition: transform .3s var(--ease),
+                background-color .35s var(--ease),
+                opacity .25s var(--ease),
+                border-radius .25s var(--ease),
+                width .25s var(--ease),
+                height .25s var(--ease);
+    will-change: transform;
+  }
+  .cursor-follow.is-hover .cursor-ring{
+    transform: translate(-50%,-50%) scale(1.65);
+    background: var(--accent-08);
+    border-color: var(--accent);
+  }
+  .cursor-follow.is-hover .cursor-pin{
+    transform: translate(-50%,-50%) scale(0);
+    opacity:0;
+  }
+  .cursor-follow.is-magnet .cursor-ring{
+    transform: translate(-50%,-50%) scale(2.2);
+    border-color: var(--accent);
+    background: var(--accent-06);
+  }
+  .cursor-follow.is-magnet .cursor-pin{
+    transform: translate(-50%,-50%) scale(1.6);
+    background: var(--accent);
+    opacity:1;
+  }
+  .cursor-follow.is-click .cursor-ring{
+    transform: translate(-50%,-50%) scale(0.72);
+    background: var(--accent-22);
+    border-color: var(--accent);
+  }
+  .cursor-follow.is-text .cursor-ring{
+    transform: translate(-50%,-50%) scale(0);
+    opacity:0;
+  }
+  .cursor-follow.is-text .cursor-pin{
+    width:2px; height:22px;
+    border-radius:1px;
+    background:var(--accent);
+    opacity:1;
+  }
+  @media (hover:none),(pointer:coarse){
+    .cursor-follow{ display:none !important; }
+  }
+
+  /* ── Nav link with sliding underline ──────────────────────── */
+  .nav-link{
+    position:relative;
+    display:inline-block;
+    padding-bottom:6px;
+    font-family:var(--sans); font-weight:500; font-size:11px;
+    letter-spacing:.22em; text-transform:uppercase;
+    color:var(--text-muted);
+    transition: color .4s var(--ease);
+  }
+  .nav-link::after{
+    content:'';
+    position:absolute; left:0; bottom:0;
+    width:100%; height:1px;
+    background:var(--accent);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform .55s var(--ease);
+  }
+  .nav-link:hover{ color:var(--text); }
+  .nav-link:hover::after{ transform: scaleX(1); }
+  .nav-link.is-active{ color:var(--text); }
+  .nav-link.is-active::after{ transform: scaleX(1); }
+
+  /* ── Outline link (Email / LinkedIn) — fill from center ──── */
+  .olink{
+    position:relative;
+    display:inline-flex; align-items:center; gap:12px;
+    padding:14px 22px;
+    border:1px solid var(--border-strong);
+    background:transparent;
+    color:var(--text);
+    font-family:var(--sans); font-weight:500; font-size:11px;
+    letter-spacing:.22em; text-transform:uppercase;
+    overflow:hidden;
+    isolation:isolate;
+    transition: border-color .5s var(--ease), color .5s var(--ease);
+  }
+  .olink::before{
+    content:'';
+    position:absolute; inset:0;
+    background:var(--accent-dim);
+    transform: scale(0);
+    transform-origin:center;
+    transition: transform .6s var(--ease);
+    z-index:-1;
+  }
+  .olink:hover{ border-color:var(--accent); color:var(--accent); }
+  .olink:hover::before{ transform: scale(1.05); }
+  .olink .arr{
+    display:inline-block; font-size:13px;
+    transition: transform .5s var(--ease);
+  }
+  .olink:hover .arr{ transform: translate(3px,-3px); }
+
+  /* ── Typewriter caret ─────────────────────────────────────── */
+  @keyframes caretBlink{ 50%{opacity:0} }
+  .caret{
+    display:inline-block;
+    width:6px; height:0.78em;
+    margin-left:10px;
+    background:var(--accent);
+    vertical-align:baseline;
+    animation: caretBlink .9s steps(2) infinite;
+    transition: opacity .8s var(--ease);
+  }
+  .caret.gone{ opacity:0; animation:none; }
+
+  /* ── Nav stagger entry ────────────────────────────────────── */
+  @keyframes navIn{
+    from{ opacity:0; transform: translateY(-8px); }
+    to  { opacity:1; transform:none; }
+  }
+  .nav-item{
+    opacity:0;
+    animation: navIn .8s var(--ease) forwards;
+  }
+
+  /* ── Section number — slower, deeper fade ─────────────────── */
+  .section-number{
+    opacity:0;
+    transform: translateY(40px) scale(0.97);
+    transition: opacity 1.8s var(--ease), transform 1.8s var(--ease);
+  }
+  .section-number.in{ opacity:1; transform:none; }
+  /* noise overlay */
+  .noise{position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:.035;mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>")}
+  /* scroll reveal */
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity 1s var(--ease), transform 1s var(--ease)}
+  .reveal.in{opacity:1;transform:none}
+  @keyframes pulseDot{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.4);opacity:.55}}
+  @keyframes barFill{from{width:0}}
+  /* utility */
+  .container{max-width:1040px;margin:0 auto;padding:0 48px}
+  .label{font-family:var(--sans);font-weight:500;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-muted)}
+  .rule{height:1px;background:var(--border);width:100%}
+  section{position:relative}
+  /* modal scrollbar */
+  .modal-scroll::-webkit-scrollbar{width:6px}
+  .modal-scroll::-webkit-scrollbar-track{background:transparent}
+  .modal-scroll::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:3px}
+  /* responsive */
+  @media (max-width:768px){
+    .container{padding:0 24px}
+  }
+
+  /* ──────────────────────────────────────────────────────────
+     CAMADA TECH (fusão com design system AERO_SYSTEMS)
+     Tudo abaixo deste comentário é aditivo. Pode ser removido
+     em bloco para reverter ao portfolio editorial puro.
+     ────────────────────────────────────────────────────────── */
+
+  /* ── Section mark · "// LABEL" com dot pulsante ─────────── */
+  .section-mark{
+    display:inline-flex; align-items:center; gap:10px;
+    font-family:var(--mono); font-size:10px;
+    letter-spacing:.28em; text-transform:uppercase;
+    color:var(--accent);
+    margin-bottom:18px;
+  }
+  .section-mark .dot-mark{
+    width:6px; height:6px; background:var(--accent);
+    box-shadow:0 0 12px var(--accent-55);
+    animation: pulseDot 2.4s ease-in-out infinite;
+  }
+  .section-mark .slash{ color:var(--text-soft); }
+
+  /* ── Decode target — cursor + transição de cor no hover ─── */
+  .decode-target{
+    cursor:default;
+    transition: color .35s var(--ease);
+    font-variant-ligatures:none;
+  }
+  .decode-target:hover{ color:var(--accent); }
+
+  /* ── Status chip · pill mono com dot ao vivo ─────────────── */
+  .chip-sys{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:6px 12px;
+    border:1px solid var(--border);
+    background:rgba(244,240,235,0.025);
+    font-family:var(--mono); font-size:9px;
+    letter-spacing:.28em; text-transform:uppercase;
+    color:var(--text-muted);
+    line-height:1;
+    transition: border-color .4s var(--ease), color .4s var(--ease);
+  }
+  .chip-sys:hover{ border-color:var(--border-strong); color:var(--text); }
+  .chip-sys .bracket{ color:var(--text-soft); }
+  .dot-live{
+    display:inline-block;
+    width:6px; height:6px; border-radius:50%;
+    background:#5ddc89;
+    box-shadow:0 0 0 3px rgba(93,220,137,0.18);
+    animation: pulseDot 2.2s ease-in-out infinite;
+    flex-shrink:0;
+  }
+
+  /* ── Side rail · navegação numerada lateral esquerda ─────── */
+  .siderail{
+    position:fixed; left:24px; top:50%;
+    transform:translateY(-50%);
+    z-index:50;
+    display:flex; flex-direction:column;
+    align-items:center; gap:14px;
+    opacity:0; transition: opacity 1.2s var(--ease);
+  }
+  .siderail.is-in{ opacity:1; }
+  .siderail::before{
+    content:''; position:absolute;
+    top:-42px; bottom:-42px; left:50%;
+    width:1px; background:var(--border);
+    transform:translateX(-50%);
+  }
+  .siderail .rdot{
+    position:relative;
+    width:26px; height:26px;
+    display:flex; align-items:center; justify-content:center;
+    background:var(--bg);
+    border:1px solid var(--border);
+    font-family:var(--mono); font-size:9px;
+    color:var(--text-soft);
+    transition: color .35s var(--ease), border-color .35s var(--ease),
+                background .35s var(--ease), box-shadow .35s var(--ease);
+  }
+  .siderail .rdot:hover{
+    color:var(--text); border-color:var(--border-strong);
+  }
+  .siderail .rdot.is-active{
+    color:var(--accent); border-color:var(--accent);
+    background:var(--accent-08);
+    box-shadow: 0 0 18px var(--accent-16);
+  }
+  .siderail .rdot.is-active::before{
+    content:''; position:absolute; left:-12px; top:50%;
+    width:8px; height:1px; background:var(--accent);
+    transform:translateY(-50%);
+  }
+  .siderail .rdot-glyph{
+    position:absolute; left:36px; top:50%;
+    transform:translateY(-50%) translateX(-6px);
+    font-family:var(--mono); font-size:9px;
+    letter-spacing:.28em; text-transform:uppercase;
+    color:var(--text-muted);
+    white-space:nowrap;
+    opacity:0;
+    transition: opacity .35s var(--ease), transform .35s var(--ease);
+    pointer-events:none;
+  }
+  .siderail .rdot:hover .rdot-glyph,
+  .siderail .rdot.is-active .rdot-glyph{
+    opacity:1; transform:translateY(-50%) translateX(0);
+  }
+  .siderail .rsig{
+    margin-top:22px;
+    font-family:var(--mono); font-size:8.5px;
+    letter-spacing:.42em; text-transform:uppercase;
+    color:var(--text-soft);
+    writing-mode:vertical-rl;
+    transform:rotate(180deg);
+    white-space:nowrap;
+  }
+  @media (max-width:1180px){ .siderail{ display:none; } }
+
+  /* ── Glow border · spotlight radial em cards ─────────────── */
+  .glow-host{ position:relative; isolation:isolate; }
+  .glow-host::after{
+    content:'';
+    position:absolute; inset:0;
+    pointer-events:none;
+    padding:1px;
+    background: radial-gradient(280px circle at var(--mx,50%) var(--my,50%),
+                var(--accent-55), transparent 60%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+            mask-composite: exclude;
+    opacity:0;
+    transition: opacity .55s var(--ease);
+    z-index:3;
+  }
+  .glow-host:hover::after{ opacity:1; }
+  .glow-grid{
+    position:absolute; inset:0;
+    background-image:
+      linear-gradient(to right, rgba(244,240,235,0.025) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(244,240,235,0.025) 1px, transparent 1px);
+    background-size: 32px 32px;
+    opacity:0;
+    transition: opacity .55s var(--ease);
+    pointer-events:none;
+    z-index:0;
+  }
+  .glow-host:hover .glow-grid{ opacity:1; }
+
+  /* ── Hero telemetry cards ────────────────────────────────── */
+  .hero-telem .telem-card{
+    position:absolute;
+    background: rgba(20,20,20,0.62);
+    -webkit-backdrop-filter: blur(10px) saturate(140%);
+            backdrop-filter: blur(10px) saturate(140%);
+    border:1px solid var(--border);
+    border-left:2px solid var(--accent);
+    padding:14px 18px;
+    font-family:var(--mono);
+    transition: border-color .4s var(--ease), border-left-color .4s var(--ease);
+    will-change: transform;
+    box-shadow: 0 20px 50px -16px rgba(0,0,0,0.55);
+  }
+  .telem-card:hover{ border-color:var(--border-strong); }
+  .telem-card .telem-eye{
+    display:flex; align-items:center; justify-content:space-between;
+    font-size:9px; letter-spacing:.22em; text-transform:uppercase;
+    color:var(--text-soft); margin-bottom:10px;
+    padding-bottom:8px; border-bottom:1px solid var(--border);
+  }
+  .telem-card .telem-row{
+    display:flex; align-items:center; justify-content:space-between;
+    font-size:10px;
+  }
+  .telem-card .telem-row + .telem-row{ margin-top:6px; }
+  .telem-card .telem-key{
+    font-size:9px; color:var(--text-soft);
+    letter-spacing:.22em; text-transform:uppercase;
+  }
+  .telem-card .telem-val{
+    font-size:11px; color:var(--text);
+    letter-spacing:.04em;
+  }
+  .telem-card .telem-mini{
+    font-size:9px; color:#5ddc89;
+    letter-spacing:.22em; text-transform:uppercase;
+  }
+  .telem-card .telem-blink{
+    width:8px; height:8px; border-radius:50%;
+    background:#5ddc89;
+    box-shadow:0 0 0 3px rgba(93,220,137,0.18);
+    animation: pulseDot 1.6s ease-in-out infinite;
+  }
+  .telem-bars{ display:flex; gap:3px; align-items:flex-end; height:14px; }
+  .telem-bars span{ width:3px; background:#5ddc89; }
+
+  /* posições — independentes da viewport, em % da seção hero */
+  .hero-telem .telem-a{
+    top:18%; right:3vw; width:230px;
+    animation: telemIn 1.4s var(--ease) 1900ms backwards;
+  }
+  .hero-telem .telem-b{
+    top:40%; right:9vw; width:268px;
+    animation: telemIn 1.4s var(--ease) 2150ms backwards;
+  }
+  .hero-telem .telem-c{
+    top:68%; right:1.5vw; width:218px;
+    animation: telemIn 1.4s var(--ease) 2400ms backwards;
+  }
+  @keyframes telemIn{
+    from{ opacity:0; transform: translateX(32px); }
+    to  { opacity:1; transform: translateX(0); }
+  }
+  @media (max-width:1100px){
+    .hero-telem{ display:none; }
+  }
+
+  /* ── Scan shimmer · linha que cruza no topo da seção ─────── */
+  @keyframes scanShimmer{
+    0%{   transform:translateX(-100%); opacity:0; }
+    8%{   opacity:1; }
+    92%{  opacity:1; }
+    100%{ transform:translateX(100%); opacity:0; }
+  }
+  .scanline{
+    position:absolute; left:0; right:0; top:0;
+    height:1px; pointer-events:none;
+    background: linear-gradient(90deg,
+      transparent 0%,
+      var(--accent-45) 40%,
+      rgba(244,240,235,0.65) 50%,
+      var(--accent-45) 60%,
+      transparent 100%);
+    animation: scanShimmer 11s linear infinite;
+    animation-delay: var(--scan-delay, 0s);
+    z-index:5;
+  }
+  /* aplica scanline automática nas seções (exceto a capa que tem nav fixa cobrindo) */
+  section[data-screen-label]{ position:relative; }
+  section[data-screen-label]:not([data-screen-label="01 Capa"])::before{
+    content:''; position:absolute; left:0; right:0; top:0;
+    height:1px; pointer-events:none;
+    background: linear-gradient(90deg,
+      transparent 0%,
+      var(--accent-42) 42%,
+      rgba(244,240,235,0.55) 50%,
+      var(--accent-42) 58%,
+      transparent 100%);
+    animation: scanShimmer 13s linear infinite;
+    z-index:5;
+  }
+  section[data-screen-label="02 Competências"]::before{ animation-delay: 0s; }
+  section[data-screen-label="03 Projetos"]::before    { animation-delay: 2.6s; }
+  section[data-screen-label="04 Certificados"]::before{ animation-delay: 5.2s; }
+  section[data-screen-label="05 Depoimentos"]::before { animation-delay: 7.8s; }
+  section[data-screen-label="06 Contato"]::before     { animation-delay: 10.4s; }
+
+  /* ── System bar · HUD inferior fixo ──────────────────────── */
+  .sysbar{
+    position:fixed; left:0; right:0; bottom:0;
+    z-index:40;
+    height:34px;
+    display:flex; align-items:stretch;
+    font-family:var(--mono); font-size:9px;
+    letter-spacing:.24em; text-transform:uppercase;
+    color:var(--text-soft);
+    background:rgba(10,10,10,0.88);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+            backdrop-filter: blur(14px) saturate(140%);
+    border-top:1px solid var(--border);
+  }
+  .sysbar-cell{
+    display:flex; align-items:center; gap:8px;
+    padding: 0 18px;
+    border-right:1px solid var(--border);
+    white-space:nowrap;
+  }
+  .sysbar-cell:last-child{ border-right:none; margin-left:auto; }
+  .sysbar-cell .dot-live{ width:5px; height:5px; box-shadow:0 0 0 2px rgba(93,220,137,0.16); }
+  .sysbar-sep{ color:var(--text-faint); }
+  .sysbar-progress{ min-width:220px; }
+  .sysbar-bar{
+    display:inline-block;
+    width:80px; height:2px;
+    background:var(--border);
+    position:relative;
+    overflow:hidden;
+  }
+  .sysbar-bar-fill{
+    position:absolute; left:0; top:0; bottom:0;
+    background:var(--accent);
+    box-shadow: 0 0 6px var(--accent-45);
+    transition: width .25s linear;
+  }
+  body{ padding-bottom: 34px; }
+  @media (max-width: 880px){
+    .sysbar-cell:nth-child(2),
+    .sysbar-cell:nth-child(3),
+    .sysbar-cell:nth-child(4){ display:none; }
+    .sysbar-cell{ padding: 0 12px; }
+  }
+  @media (max-width: 520px){
+    .sysbar{ font-size:8px; height:30px; }
+    body{ padding-bottom: 30px; }
+  }
+  @media (max-width: 760px){
+    .nav-chip{ display:none !important; }
+  }
+
+  /* ── Prefers reduced motion · respeita preferências do SO ── */
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{
+      animation-duration: .001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: .001ms !important;
+      scroll-behavior: auto !important;
+    }
+    .cursor-follow{ display:none !important; }
+    .scanline,
+    section[data-screen-label]:not([data-screen-label="01 Capa"])::before{
+      animation: none !important;
+      opacity:.22;
+    }
+    .telem-card{ animation: none !important; transform: none !important; }
+  }
+
+  /* ──────────────────────────────────────────────────────────
+     TWEAKABLE VARIANTS — alteram a sensação inteira
+     ────────────────────────────────────────────────────────── */
+
+  /* INTENSITY · Calmo — desliga toda a camada HUD */
+  body[data-intensity="calmo"] .siderail,
+  body[data-intensity="calmo"] .sysbar,
+  body[data-intensity="calmo"] .hero-telem,
+  body[data-intensity="calmo"] section[data-screen-label]:not([data-screen-label="01 Capa"])::before,
+  body[data-intensity="calmo"] .nav-chip{
+    display:none !important;
+  }
+  body[data-intensity="calmo"]{ padding-bottom: 0; }
+
+  /* INTENSITY · Total — HUD intenso, scans mais rápidos e brilhantes */
+  body[data-intensity="total"] section[data-screen-label]:not([data-screen-label="01 Capa"])::before{
+    animation-duration: 6s !important;
+    background: linear-gradient(90deg,
+      transparent 0%,
+      var(--accent-55) 38%,
+      rgba(244,240,235,0.85) 50%,
+      var(--accent-55) 62%,
+      transparent 100%) !important;
+    height: 1.5px !important;
+  }
+  body[data-intensity="total"] .siderail .rdot-glyph{
+    opacity:1 !important;
+    transform: translateY(-50%) translateX(0) !important;
+  }
+  body[data-intensity="total"] .siderail .rdot{
+    box-shadow: 0 0 14px var(--accent-08);
+  }
+  body[data-intensity="total"] .sysbar{
+    height: 40px;
+    border-top: 1px solid var(--accent-22);
+    box-shadow: 0 -10px 30px -10px var(--accent-08);
+  }
+  body[data-intensity="total"]{ padding-bottom: 40px; }
+  body[data-intensity="total"] .hero-telem .telem-card{
+    box-shadow: 0 20px 50px -16px rgba(0,0,0,0.55),
+                0 0 0 1px var(--accent-16);
+  }
+  body[data-intensity="total"] .section-mark .dot-mark{
+    box-shadow: 0 0 18px var(--accent-55), 0 0 4px var(--accent);
+  }
+  body[data-intensity="total"] .glow-host:hover .glow-grid{
+    background-image:
+      linear-gradient(to right, var(--accent-08) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--accent-08) 1px, transparent 1px);
+  }
+
+  /* VOICE · Brutalista — Space Grotesk em todo lugar, mais peso, tracking maior */
+  body[data-voice="brutalista"]{
+    --serif:'Space Grotesk', system-ui, sans-serif;
+    --sans :'Space Grotesk', system-ui, sans-serif;
+    --mono :'JetBrains Mono', ui-monospace, monospace;
+  }
+  body[data-voice="brutalista"] h1,
+  body[data-voice="brutalista"] h2,
+  body[data-voice="brutalista"] h3{
+    font-weight:600 !important;
+    letter-spacing:-0.04em !important;
+  }
+  body[data-voice="brutalista"] em,
+  body[data-voice="brutalista"] i{ font-style: normal !important; font-weight:600; }
+
+  /* VOICE · Máquina — tudo em mono, headlines viram terminal */
+  body[data-voice="maquina"]{
+    --serif:'JetBrains Mono', ui-monospace, monospace;
+    --sans :'JetBrains Mono', ui-monospace, monospace;
+    --mono :'JetBrains Mono', ui-monospace, monospace;
+  }
+  body[data-voice="maquina"] h1,
+  body[data-voice="maquina"] h2,
+  body[data-voice="maquina"] h3{
+    font-weight:500 !important;
+    letter-spacing:-0.04em !important;
+  }
+  body[data-voice="maquina"] h1{ font-size: clamp(48px, 8vw, 96px) !important; }
+  body[data-voice="maquina"] em,
+  body[data-voice="maquina"] i{
+    font-style: normal !important;
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+    text-underline-offset: 4px;
+    text-decoration-thickness: 1px;
+  }
+  body[data-voice="maquina"] p{
+    font-weight: 400 !important;
+  }
+
+  /* Em ambos os tons alternativos, achatar os títulos em itálico do depoimento/contato */
+  body[data-voice="brutalista"] [style*="italic"],
+  body[data-voice="maquina"] [style*="italic"]{
+    font-style: normal !important;
+  }
+</style>
+</head>
+<body>
+<div class="noise" aria-hidden="true"></div>
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script>
+  // Defaults dos Tweaks · o host reescreve este bloco quando o usuário muda algo.
+  window.TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+    "palette": [
+      "#e8601c",
+      "#ff7a3a",
+      "#f4f0eb"
+    ],
+    "intensity": "equilibrado",
+    "voice": "editorial"
+  }/*EDITMODE-END*/;
+</script>
+<script type="text/babel" src="src/tweaks-panel.jsx"></script>
+<script type="text/babel" src="src/tweaks-config.jsx"></script>
+<script type="text/babel" src="src/tech.jsx"></script>
+<script type="text/babel" src="src/bundle.jsx"></script>
+</body>
+</html>

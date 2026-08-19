@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Gustavo de Oliveira — Portfólio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=IBM+Plex+Sans:wght@300;400;500&family=IBM+Plex+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0c0c0c;
+    --surface:#141414;
+    --surface-2:#1c1c1c;
+    --border:rgba(244,240,235,0.10);
+    --border-strong:rgba(244,240,235,0.22);
+    --accent:#e8601c;
+    --accent-dim:rgba(232,96,28,0.15);
+    --text:#f4f0eb;
+    --text-muted:rgba(244,240,235,0.66);
+    --text-soft:rgba(244,240,235,0.34);
+    --text-faint:rgba(244,240,235,0.08);
+    --serif:'Playfair Display', Georgia, serif;
+    --sans:'IBM Plex Sans', system-ui, sans-serif;
+    --mono:'IBM Plex Mono', ui-monospace, monospace;
+    --ease:cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--bg);color:var(--text);font-family:var(--sans);font-weight:300;-webkit-font-smoothing:antialiased;line-height:1.5}
+  body{overflow-x:hidden}
+  a{color:inherit;text-decoration:none}
+  button{font:inherit;background:none;border:none;color:inherit;cursor:pointer}
+  ::selection{background:var(--accent);color:#fff}
+
+  /* ── Custom cursor (magnetic follower, additive) ──────────── */
+  .cursor-dot{
+    position:fixed; top:0; left:0;
+    width:14px; height:14px;
+    border:1px solid rgba(232,96,28,0.65);
+    border-radius:50%;
+    pointer-events:none;
+    z-index:99999;
+    transform: translate3d(-100px,-100px,0);
+    transition: width .35s var(--ease), height .35s var(--ease),
+                border-color .35s var(--ease), background-color .35s var(--ease),
+                opacity .3s var(--ease);
+    will-change: transform, width, height;
+    mix-blend-mode: normal;
+  }
+  .cursor-dot.is-hover{
+    width:36px; height:36px;
+    background:rgba(232,96,28,0.10);
+    border-color:rgba(232,96,28,0.95);
+  }
+  .cursor-dot.is-text{
+    width:4px; height:24px;
+    border-radius:1px;
+    background:rgba(232,96,28,0.85);
+    border-color:transparent;
+  }
+  @media (hover:none),(pointer:coarse){
+    .cursor-dot{display:none}
+  }
+
+  /* ── Nav link with sliding underline ──────────────────────── */
+  .nav-link{
+    position:relative;
+    display:inline-block;
+    padding-bottom:6px;
+    font-family:var(--sans); font-weight:500; font-size:11px;
+    letter-spacing:.22em; text-transform:uppercase;
+    color:var(--text-muted);
+    transition: color .4s var(--ease);
+  }
+  .nav-link::after{
+    content:'';
+    position:absolute; left:0; bottom:0;
+    width:100%; height:1px;
+    background:var(--accent);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform .55s var(--ease);
+  }
+  .nav-link:hover{ color:var(--text); }
+  .nav-link:hover::after{ transform: scaleX(1); }
+  .nav-link.is-active{ color:var(--text); }
+  .nav-link.is-active::after{ transform: scaleX(1); }
+
+  /* ── Outline link (Email / LinkedIn) — fill from center ──── */
+  .olink{
+    position:relative;
+    display:inline-flex; align-items:center; gap:12px;
+    padding:14px 22px;
+    border:1px solid var(--border-strong);
+    background:transparent;
+    color:var(--text);
+    font-family:var(--sans); font-weight:500; font-size:11px;
+    letter-spacing:.22em; text-transform:uppercase;
+    overflow:hidden;
+    isolation:isolate;
+    transition: border-color .5s var(--ease), color .5s var(--ease);
+  }
+  .olink::before{
+    content:'';
+    position:absolute; inset:0;
+    background:var(--accent-dim);
+    transform: scale(0);
+    transform-origin:center;
+    transition: transform .6s var(--ease);
+    z-index:-1;
+  }
+  .olink:hover{ border-color:var(--accent); color:var(--accent); }
+  .olink:hover::before{ transform: scale(1.05); }
+  .olink .arr{
+    display:inline-block; font-size:13px;
+    transition: transform .5s var(--ease);
+  }
+  .olink:hover .arr{ transform: translate(3px,-3px); }
+
+  /* ── Typewriter caret ─────────────────────────────────────── */
+  @keyframes caretBlink{ 50%{opacity:0} }
+  .caret{
+    display:inline-block;
+    width:6px; height:0.78em;
+    margin-left:10px;
+    background:var(--accent);
+    vertical-align:baseline;
+    animation: caretBlink .9s steps(2) infinite;
+    transition: opacity .8s var(--ease);
+  }
+  .caret.gone{ opacity:0; animation:none; }
+
+  /* ── Nav stagger entry ────────────────────────────────────── */
+  @keyframes navIn{
+    from{ opacity:0; transform: translateY(-8px); }
+    to  { opacity:1; transform:none; }
+  }
+  .nav-item{
+    opacity:0;
+    animation: navIn .8s var(--ease) forwards;
+  }
+
+  /* ── Section number — slower, deeper fade ─────────────────── */
+  .section-number{
+    opacity:0;
+    transform: translateY(40px) scale(0.97);
+    transition: opacity 1.8s var(--ease), transform 1.8s var(--ease);
+  }
+  .section-number.in{ opacity:1; transform:none; }
+  /* noise overlay */
+  .noise{position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:.035;mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>")}
+  /* scroll reveal */
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity 1s var(--ease), transform 1s var(--ease)}
+  .reveal.in{opacity:1;transform:none}
+  @keyframes pulseDot{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.4);opacity:.55}}
+  @keyframes barFill{from{width:0}}
+  /* utility */
+  .container{max-width:1040px;margin:0 auto;padding:0 48px}
+  .label{font-family:var(--sans);font-weight:500;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-muted)}
+  .rule{height:1px;background:var(--border);width:100%}
+  section{position:relative}
+  /* modal scrollbar */
+  .modal-scroll::-webkit-scrollbar{width:6px}
+  .modal-scroll::-webkit-scrollbar-track{background:transparent}
+  .modal-scroll::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:3px}
+  /* responsive */
+  @media (max-width:768px){
+    .container{padding:0 24px}
+  }
+</style>
+</head>
+<body>
+<div class="noise" aria-hidden="true"></div>
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel" src="src/bundle.jsx"></script>
+</body>
+</html>
