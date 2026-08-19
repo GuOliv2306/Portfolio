@@ -1,3 +1,37 @@
+# Portfólio · Gustavo de Oliveira
+
+App de produção (React + Vite) na raiz do repositório. O protótipo original do
+Claude Design fica preservado em `project/` apenas como referência de design.
+
+```bash
+npm install
+npm run dev      # servidor de desenvolvimento
+npm run build    # gera dist/
+npm run preview  # serve o dist/ localmente
+```
+
+**Estrutura**
+
+| Caminho | Conteúdo |
+|---|---|
+| `index.html` | shell da página, meta tags de SEO/Open Graph, fontes |
+| `src/main.jsx` | ponto de entrada do React |
+| `src/App.jsx` | composição das seções + smooth scroll |
+| `src/data.js` | conteúdo editável: projetos, certificados, skills, contato |
+| `src/styles.css` | design system completo (tokens, cursor, HUD, responsivo) |
+| `src/components/` | uma seção por arquivo + `primitives.jsx` e `tech.jsx` |
+| `public/assets/` | currículo e certificado em PDF |
+
+**Publicar na Vercel** — a Vercel detecta o Vite automaticamente (build `npm run build`,
+saída `dist`). Basta importar o repositório; nenhuma variável de ambiente é necessária.
+Depois do primeiro deploy, troque o domínio provisório em `index.html`
+(`<link rel="canonical">` e `og:url`) pelo domínio final.
+
+**Para editar o conteúdo** — quase tudo vive em `src/data.js`. Textos longos de
+seção (bio, depoimentos, frases da capa) ficam no componente correspondente.
+
+---
+
 # CODING AGENTS: READ THIS FIRST
 
 This is a **handoff bundle** from Claude Design (claude.ai/design).
