@@ -36,7 +36,7 @@ function SkillRow({ skill }) {
       </div>
       <div style={{ justifySelf: 'end' }}>
         <span style={{
-          fontFamily: 'var(--mono)', fontSize: 10,
+          fontFamily: 'var(--mono)', fontSize: 'var(--fs-label)',
           letterSpacing: '.22em', textTransform: 'uppercase',
           color: hover ? 'var(--text)' : 'var(--text-muted)',
           transition: 'color .35s var(--ease)',
@@ -44,7 +44,7 @@ function SkillRow({ skill }) {
       </div>
       <p style={{
         gridColumn: '1 / -1',
-        fontFamily: 'var(--sans)', fontWeight: 300, fontSize: 13,
+        fontFamily: 'var(--sans)', fontWeight: 300, fontSize: 'var(--fs-body)',
         lineHeight: 1.55,
         color: hover ? 'var(--text)' : 'var(--text-muted)',
         maxWidth: '58ch',
@@ -68,7 +68,7 @@ function CVButton() {
         padding: '14px 22px',
         background: hover ? 'var(--accent-strong)' : 'var(--accent)',
         color: '#0c0c0c',
-        fontFamily: 'var(--sans)', fontWeight: 500, fontSize: 11,
+        fontFamily: 'var(--sans)', fontWeight: 500, fontSize: 'var(--fs-label)',
         letterSpacing: '.22em', textTransform: 'uppercase',
         transition: 'background .45s var(--ease), box-shadow .45s var(--ease)',
         boxShadow: hover ? '4px 4px 0 var(--text)' : '0 0 0 var(--text)',
@@ -117,13 +117,13 @@ export default function Competencias() {
             }}>
               <p style={{
                 fontFamily: 'var(--sans)', fontWeight: 300,
-                fontSize: 14, lineHeight: 1.85, color: 'var(--text)',
+                fontSize: 'var(--fs-body)', lineHeight: 1.85, color: 'var(--text)',
               }}>
                 Me chamo Gustavo. Atualmente estudante de <em style={{ color: 'var(--accent)', fontStyle: 'normal' }}>Comunicação Digital</em> na FGV, mas já fiz 2 anos de Ciência de Dados e IA na EMAp — e faço proveito desse conhecimento híbrido para ter uma análise metódica de dados comunicacionais, entendendo que a complexidade das vidas ao qual só os números e inferências não vão realizar sozinhos.
               </p>
               <p style={{
                 fontFamily: 'var(--sans)', fontWeight: 300,
-                fontSize: 14, lineHeight: 1.85, color: 'var(--text-muted)',
+                fontSize: 'var(--fs-body)', lineHeight: 1.85, color: 'var(--text-muted)',
               }}>
                 Uso habilidade de compreender análises para fazer também um bom storytelling e criação de estratégias. Com conhecimentos estatísticos, aplico análise exploratória para entender o contexto do hoje e inferência para probabilizar o amanhã.
               </p>
@@ -178,15 +178,15 @@ export default function Competencias() {
                 <React.Fragment key={n}>
                   <a href={href} className="next-link" style={{
                     display: 'inline-flex', alignItems: 'baseline', gap: 10,
-                    fontFamily: 'var(--sans)', fontWeight: 500, fontSize: 11,
+                    fontFamily: 'var(--sans)', fontWeight: 500, fontSize: 'var(--fs-label)',
                     letterSpacing: '.22em', textTransform: 'uppercase',
                     color: 'var(--text-muted)',
                     transition: 'color .4s var(--ease)',
                   }}>
-                    <span style={{ fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--accent)' }}>→ {n}</span>
+                    <span style={{ fontFamily: 'var(--mono)', fontSize: 'var(--fs-label)', color: 'var(--accent)' }}>→ {n}</span>
                     <span>{label}</span>
                   </a>
-                  {i < arr.length - 1 && <span style={{ color: 'var(--text-faint)' }}>/</span>}
+                  {i < arr.length - 1 && <span aria-hidden="true" style={{ color: 'var(--text-faint)' }}>/</span>}
                 </React.Fragment>
               ))}
             </div>

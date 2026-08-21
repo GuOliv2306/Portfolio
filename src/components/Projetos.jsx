@@ -68,12 +68,12 @@ function ProjectCard({ project, onOpen }) {
             padding: '3px 8px',
             border: '1px solid var(--border-strong)',
             background: 'rgba(244,240,235,0.025)',
-            fontFamily: 'var(--mono)', fontSize: 9,
+            fontFamily: 'var(--mono)', fontSize: 'var(--fs-label)',
             letterSpacing: '.24em', textTransform: 'uppercase',
             color: 'var(--text-soft)',
             lineHeight: 1,
           }}>
-            <span aria-hidden="true" style={{ fontSize: 10 }}>●</span>
+            <span aria-hidden="true" style={{ fontSize: 'var(--fs-micro)' }}>●</span>
             Confidencial
           </span>
         )}
@@ -89,7 +89,7 @@ function ProjectCard({ project, onOpen }) {
 
       <p style={{
         marginTop: 14,
-        fontFamily: 'var(--sans)', fontSize: 13.5, lineHeight: 1.65,
+        fontFamily: 'var(--sans)', fontSize: 'var(--fs-body)', lineHeight: 1.65,
         color: 'var(--text-muted)',
         maxWidth: '95%',
         display: '-webkit-box',
@@ -146,12 +146,12 @@ function ModalSection({ num, title, children }) {
   return (
     <section style={{ marginBottom: 36 }}>
       <div style={{ display: 'flex', alignItems: 'baseline', gap: 14, marginBottom: 14 }}>
-        <span style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--accent)', letterSpacing: '.25em' }}>{num}</span>
+        <span style={{ fontFamily: 'var(--mono)', fontSize: 'var(--fs-label)', color: 'var(--accent)', letterSpacing: '.25em' }}>{num}</span>
         <span style={{ width: 24, height: 1, background: 'var(--accent)' }} />
         <h3 className="label" style={{ color: 'var(--text)' }}>{title}</h3>
       </div>
       <div className="modal-body" style={{
-        fontFamily: 'var(--sans)', fontSize: 14, lineHeight: 1.8, color: 'var(--text-muted)',
+        fontFamily: 'var(--sans)', fontSize: 'var(--fs-body)', lineHeight: 1.8, color: 'var(--text-muted)',
         maxWidth: '72ch', paddingLeft: 60,
       }}>{children}</div>
     </section>
@@ -257,7 +257,7 @@ function ProjectModal({ project, onClose }) {
               }}>
                 <div style={{ position: 'relative' }}>
                   <div className="label" style={{ color: 'var(--text-muted)', fontFamily: 'var(--mono)' }}>0{i + 1} · entregável</div>
-                  <div style={{ fontFamily: 'var(--serif)', fontSize: 15, marginTop: 4, lineHeight: 1.25 }}>{d}</div>
+                  <div style={{ fontFamily: 'var(--serif)', fontSize: 'var(--fs-body)', marginTop: 4, lineHeight: 1.25 }}>{d}</div>
                 </div>
               </div>
             ))}
@@ -303,7 +303,7 @@ function ProjectModal({ project, onClose }) {
                 border: '1px dashed var(--border-strong)',
                 background: 'rgba(244,240,235,0.018)',
                 color: 'var(--text-muted)',
-                fontFamily: 'var(--mono)', fontSize: 10.5,
+                fontFamily: 'var(--mono)', fontSize: 'var(--fs-label)',
                 letterSpacing: '.24em', textTransform: 'uppercase',
                 lineHeight: 1.2,
               }}>
@@ -341,7 +341,7 @@ export default function Projetos() {
             }}>
               Projetos<br />Selecionados<span style={{ color: 'var(--accent)' }}>.</span>
             </h2>
-            <div style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--text-muted)', letterSpacing: '.2em', textTransform: 'uppercase' }}>
+            <div style={{ fontFamily: 'var(--mono)', fontSize: 'var(--fs-label)', color: 'var(--text-muted)', letterSpacing: '.2em', textTransform: 'uppercase' }}>
               {String(PROJECTS.length).padStart(2, '0')} · trabalhos
             </div>
           </div>
@@ -367,9 +367,9 @@ export default function Projetos() {
               textAlign: 'center', gap: 14,
               color: 'var(--text-muted)',
             }}>
-              <span style={{ fontFamily: 'var(--serif)', fontSize: 48, color: 'var(--text-faint)' }}>+</span>
+              <span aria-hidden="true" style={{ fontFamily: 'var(--serif)', fontSize: 48, color: 'var(--text-faint)' }}>+</span>
               <div className="label">Em produção</div>
-              <p style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: 15, maxWidth: '28ch', lineHeight: 1.5 }}>
+              <p style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: 'var(--fs-body)', maxWidth: '28ch', lineHeight: 1.5 }}>
                 Novos projetos chegam a cada semestre — fique de olho.
               </p>
             </div>

@@ -17,7 +17,7 @@ function Footer() {
       marginTop: 96, paddingTop: 32, borderTop: '1px solid var(--border)',
       display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 14,
     }}>
-      <div style={{ fontFamily: 'var(--sans)', fontWeight: 300, fontSize: 12, color: 'var(--text-soft)' }}>
+      <div style={{ fontFamily: 'var(--sans)', fontWeight: 300, fontSize: 'var(--fs-label)', color: 'var(--text-soft)' }}>
         © {new Date().getFullYear()} Gustavo de Oliveira · Comunicação Digital × Dados
       </div>
       <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -25,7 +25,7 @@ function Footer() {
           width: 6, height: 6, borderRadius: '50%', background: 'var(--accent)',
           animation: 'pulseDot 2.4s ease-in-out infinite',
         }} />
-        <span className="label" style={{ color: 'var(--text-muted)', fontSize: 10 }}>
+        <span className="label" style={{ color: 'var(--text-muted)', fontSize: 'var(--fs-label)' }}>
           Versão 2 · Studio Editorial
         </span>
       </div>

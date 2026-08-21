@@ -61,7 +61,7 @@ function CertTab({ cert, active, onPick }) {
         marginBottom: 14,
       }}>
         <span style={{
-          fontFamily: 'var(--mono)', fontSize: 10,
+          fontFamily: 'var(--mono)', fontSize: 'var(--fs-label)',
           letterSpacing: '.28em', textTransform: 'uppercase',
           color: active || hover ? 'var(--accent)' : 'var(--text-soft)',
           transition: 'color .35s var(--ease)',
@@ -89,7 +89,7 @@ function CertTab({ cert, active, onPick }) {
         border: `1px solid ${active ? 'var(--accent-45)' : 'var(--border-strong)'}`,
         background: active ? 'var(--accent-08)' : 'var(--surface)',
         color: active ? 'var(--accent)' : (hover ? 'var(--text)' : 'var(--text-soft)'),
-        fontFamily: 'var(--mono)', fontSize: 9,
+        fontFamily: 'var(--mono)', fontSize: 'var(--fs-label)',
         letterSpacing: '.24em', textTransform: 'uppercase',
         lineHeight: 1,
         transition: 'background .35s var(--ease), border-color .35s var(--ease), color .35s var(--ease)',
@@ -112,13 +112,13 @@ function CertPanel({ cert, ord }) {
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24, flexWrap: 'wrap' }}>
             <span style={{
-              fontFamily: 'var(--mono)', fontSize: 10,
+              fontFamily: 'var(--mono)', fontSize: 'var(--fs-label)',
               letterSpacing: '.28em', textTransform: 'uppercase',
               color: 'var(--accent)',
             }}>// CERT_FILE · {String(cert.credential).slice(0, 8).toUpperCase()}</span>
             <span style={{ width: 1, height: 12, background: 'var(--border-strong)' }} />
             <span style={{
-              fontFamily: 'var(--mono)', fontSize: 10,
+              fontFamily: 'var(--mono)', fontSize: 'var(--fs-label)',
               letterSpacing: '.28em', textTransform: 'uppercase',
               color: 'var(--text-soft)',
             }}>{cert.hours} · CARGA HORÁRIA</span>
@@ -134,7 +134,7 @@ function CertPanel({ cert, ord }) {
           }}>{cert.full}<span style={{ color: 'var(--accent)' }}>.</span></h3>
 
           <p style={{
-            fontFamily: 'var(--sans)', fontWeight: 300, fontSize: 14, lineHeight: 1.75,
+            fontFamily: 'var(--sans)', fontWeight: 300, fontSize: 'var(--fs-body)', lineHeight: 1.75,
             color: 'var(--text-muted)',
             maxWidth: '52ch',
             paddingLeft: 18, borderLeft: '1px solid var(--accent)',
@@ -224,7 +224,7 @@ export default function Certificados() {
               Capacidades<br />Certificadas<span style={{ color: 'var(--accent)' }}>.</span>
             </h2>
             <div style={{
-              fontFamily: 'var(--mono)', fontSize: 11,
+              fontFamily: 'var(--mono)', fontSize: 'var(--fs-label)',
               color: 'var(--text-muted)', letterSpacing: '.2em', textTransform: 'uppercase',
             }}>
               {String(CERTS.length).padStart(2, '0')} · credenciais
@@ -284,7 +284,7 @@ export default function Certificados() {
               ))}
             </div>
             <span style={{
-              fontFamily: 'var(--mono)', fontSize: 10,
+              fontFamily: 'var(--mono)', fontSize: 'var(--fs-label)',
               letterSpacing: '.28em', textTransform: 'uppercase',
               color: 'var(--text-soft)',
             }}>

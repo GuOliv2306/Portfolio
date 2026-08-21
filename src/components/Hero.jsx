@@ -71,13 +71,13 @@ export default function Hero() {
               animation: 'pulseDot 2.4s ease-in-out infinite',
             }} />
             <span style={{
-              fontFamily: 'var(--mono)', fontSize: 11,
+              fontFamily: 'var(--mono)', fontSize: 'var(--fs-label)',
               letterSpacing: '.25em', textTransform: 'uppercase',
               color: 'var(--accent)',
             }}>Disponível para projetos</span>
             <span style={{ width: 1, height: 14, background: 'var(--border-strong)' }} />
             <span style={{
-              fontFamily: 'var(--mono)', fontSize: 10,
+              fontFamily: 'var(--mono)', fontSize: 'var(--fs-micro)',
               letterSpacing: '.28em', textTransform: 'uppercase',
               color: 'var(--text-soft)',
             }}>// CAPA · 01_INIT</span>
@@ -117,7 +117,7 @@ export default function Hero() {
             <Reveal key={i} delay={T_AFTER_NAME + 240 + i * 120} immediate>
               <p style={{
                 fontFamily: 'var(--serif)', fontStyle: 'italic', fontWeight: 400,
-                fontSize: 15, lineHeight: 1.7,
+                fontSize: 'var(--fs-body)', lineHeight: 1.7,
                 color: 'var(--text-muted)',
                 paddingLeft: 18,
                 borderLeft: '1px solid var(--border-strong)',
@@ -142,7 +142,7 @@ export default function Hero() {
             color: 'var(--text-muted)',
           }}>
             <span style={{
-              fontFamily: 'var(--mono)', fontSize: 10, letterSpacing: '.3em', textTransform: 'uppercase',
+              fontFamily: 'var(--mono)', fontSize: 'var(--fs-micro)', letterSpacing: '.3em', textTransform: 'uppercase',
               writingMode: 'vertical-rl', transform: 'rotate(180deg)',
             }}>Scroll</span>
             <span aria-hidden="true" style={{ width: 1, height: 48, background: 'var(--border-strong)' }} />

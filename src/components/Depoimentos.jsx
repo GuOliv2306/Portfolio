@@ -56,7 +56,7 @@ export default function Depoimentos() {
               }}>
                 <div style={{
                   position: 'absolute', top: 14, left: 16,
-                  fontFamily: 'var(--mono)', fontSize: 10, letterSpacing: '.2em',
+                  fontFamily: 'var(--mono)', fontSize: 'var(--fs-label)', letterSpacing: '.2em',
                   color: 'var(--text-soft)', textTransform: 'uppercase',
                 }}>
                   {it.num} / depoimento
@@ -81,12 +81,12 @@ export default function Depoimentos() {
                   borderTop: '1px dashed var(--border)',
                 }}>
                   <div style={{
-                    fontFamily: 'var(--sans)', fontWeight: 600, fontSize: 14,
+                    fontFamily: 'var(--sans)', fontWeight: 600, fontSize: 'var(--fs-meta)',
                     color: 'var(--text)', letterSpacing: '-0.01em',
                   }}>
                     {it.name}
                   </div>
-                  <div style={{ fontFamily: 'var(--sans)', fontSize: 13, color: 'var(--text-muted)' }}>
+                  <div style={{ fontFamily: 'var(--sans)', fontSize: 'var(--fs-meta)', color: 'var(--text-muted)' }}>
                     {it.role}
                   </div>
                   <div className="label" style={{ color: 'var(--text-soft)', marginTop: 4 }}>

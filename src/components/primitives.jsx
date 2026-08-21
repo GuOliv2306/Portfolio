@@ -66,7 +66,7 @@ export function SectionEyebrow({ num, label }) {
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 24 }}>
       <span style={{
-        fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--accent)',
+        fontFamily: 'var(--mono)', fontSize: 'var(--fs-label)', color: 'var(--accent)',
         letterSpacing: '.25em', textTransform: 'uppercase', fontWeight: 400,
       }}>{num}</span>
       <span style={{ width: 48, height: 1, background: 'var(--accent)' }} />
@@ -96,7 +96,7 @@ export function Tag({ children, accent = false }) {
       border: `1px solid ${accent ? 'var(--accent)' : 'var(--border-strong)'}`,
       background: accent ? 'var(--accent-dim)' : 'var(--surface)',
       color: accent ? 'var(--accent)' : 'var(--text-muted)',
-      fontSize: 10, letterSpacing: '.18em', textTransform: 'uppercase',
+      fontSize: 'var(--fs-label)', letterSpacing: '.18em', textTransform: 'uppercase',
       fontFamily: 'var(--sans)', fontWeight: 500,
       borderRadius: 3,
     }}>{children}</span>

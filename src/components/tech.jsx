@@ -281,7 +281,7 @@ export function SystemBar() {
     <div className="sysbar" role="status" aria-label="Barra de sistema">
       <span className="sysbar-cell">
         <span className="dot-live" /> LIVE
-        <span className="sysbar-sep">/</span>
+        <span className="sysbar-sep" aria-hidden="true">/</span>
         <span style={{ color: 'var(--text-muted)' }}>{section}</span>
       </span>
       <span className="sysbar-cell">LAT 22.91° S · LNG 43.17° W</span>

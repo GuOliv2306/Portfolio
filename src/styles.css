@@ -20,12 +20,19 @@
   --accent-55: color-mix(in oklch, var(--accent) 55%, transparent);
   --text:#f4f0eb;
   --text-muted:rgba(244,240,235,0.66);
-  --text-soft:rgba(244,240,235,0.34);
+  --text-soft:rgba(244,240,235,0.55);
   --text-faint:rgba(244,240,235,0.08);
   --serif:'Playfair Display', Georgia, serif;
   --sans:'IBM Plex Sans', system-ui, sans-serif;
   --mono:'IBM Plex Mono', ui-monospace, monospace;
   --ease:cubic-bezier(0.4, 0, 0.2, 1);
+  /* Pisos de tipografia — a estética de terminal sobrevive a eles.
+     micro: HUD denso (sysbar, telemetria, side rail) · label: rótulos que o
+     leitor de fato lê · meta: legendas · body: texto corrido. */
+  --fs-micro:11px;
+  --fs-label:12px;
+  --fs-meta:14px;
+  --fs-body:16px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{background:var(--bg);color:var(--text);font-family:var(--sans);font-weight:300;-webkit-font-smoothing:antialiased;line-height:1.5}
@@ -118,7 +125,7 @@ button{font:inherit;background:none;border:none;color:inherit;cursor:pointer}
   position:relative;
   display:inline-block;
   padding-bottom:6px;
-  font-family:var(--sans); font-weight:500; font-size:11px;
+  font-family:var(--sans); font-weight:500; font-size:var(--fs-label);
   letter-spacing:.22em; text-transform:uppercase;
   color:var(--text-muted);
   white-space:nowrap;
@@ -146,7 +153,7 @@ button{font:inherit;background:none;border:none;color:inherit;cursor:pointer}
   border:1px solid var(--border-strong);
   background:transparent;
   color:var(--text);
-  font-family:var(--sans); font-weight:500; font-size:11px;
+  font-family:var(--sans); font-weight:500; font-size:var(--fs-label);
   letter-spacing:.22em; text-transform:uppercase;
   overflow:hidden;
   isolation:isolate;
@@ -208,13 +215,13 @@ button{font:inherit;background:none;border:none;color:inherit;cursor:pointer}
 @keyframes pulseDot{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.4);opacity:.55}}
 
 .container{max-width:1040px;margin:0 auto;padding:0 48px}
-.label{font-family:var(--sans);font-weight:500;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-muted)}
+.label{font-family:var(--sans);font-weight:500;font-size:var(--fs-label);letter-spacing:.2em;text-transform:uppercase;color:var(--text-muted)}
 section{position:relative}
 
 .next-link:hover{ color:var(--accent) !important; }
 
 .nav-brand{
-  font-family:var(--sans); font-weight:500; font-size:11.5px;
+  font-family:var(--sans); font-weight:500; font-size:var(--fs-label);
   letter-spacing:.28em; text-transform:uppercase;
   white-space:nowrap;
 }
@@ -243,7 +250,7 @@ section{position:relative}
   .nav-toggle{
     display:inline-flex; align-items:center; gap:12px;
     min-height:44px; padding:10px 2px 10px 14px;
-    font-family:var(--sans); font-weight:500; font-size:12px;
+    font-family:var(--sans); font-weight:500; font-size:var(--fs-label);
     letter-spacing:.22em; text-transform:uppercase;
     color:var(--text);
   }
@@ -290,7 +297,7 @@ section{position:relative}
 .nav-panel-link:hover{ color:var(--text); }
 .nav-panel-link.is-active{ color:var(--accent); }
 .nav-panel-num{
-  font-family:var(--mono); font-size:12px;
+  font-family:var(--mono); font-size:var(--fs-label);
   letter-spacing:.2em; color:var(--text-soft);
   transition: color .3s var(--ease);
 }
@@ -375,7 +382,7 @@ section{position:relative}
 .proj-cta{
   display:inline-flex; align-items:center; gap:12px;
   min-height:44px;
-  font-family:var(--sans); font-weight:500; font-size:12px;
+  font-family:var(--sans); font-weight:500; font-size:var(--fs-label);
   letter-spacing:.22em; text-transform:uppercase;
   color:var(--text);
   transition: color .4s var(--ease);
@@ -396,7 +403,7 @@ section{position:relative}
   display:inline-flex; align-items:center; gap:7px;
   min-height:38px; padding:8px 11px;
   border:1px solid var(--border-strong);
-  font-family:var(--mono); font-size:11px;
+  font-family:var(--mono); font-size:var(--fs-label);
   letter-spacing:.14em; text-transform:uppercase;
   color:var(--text-muted);
   white-space:nowrap;
@@ -415,7 +422,7 @@ section{position:relative}
 /* ── Section mark · "// LABEL" com dot pulsante ───────────── */
 .section-mark{
   display:inline-flex; align-items:center; gap:10px;
-  font-family:var(--mono); font-size:10px;
+  font-family:var(--mono); font-size:var(--fs-label);
   letter-spacing:.28em; text-transform:uppercase;
   color:var(--accent);
   margin-bottom:18px;
@@ -441,7 +448,7 @@ section{position:relative}
   padding:6px 12px;
   border:1px solid var(--border);
   background:rgba(244,240,235,0.025);
-  font-family:var(--mono); font-size:9px;
+  font-family:var(--mono); font-size:var(--fs-micro);
   letter-spacing:.28em; text-transform:uppercase;
   color:var(--text-muted);
   line-height:1;
@@ -480,7 +487,7 @@ section{position:relative}
   display:flex; align-items:center; justify-content:center;
   background:var(--bg);
   border:1px solid var(--border);
-  font-family:var(--mono); font-size:9px;
+  font-family:var(--mono); font-size:var(--fs-label);
   color:var(--text-soft);
   transition: color .35s var(--ease), border-color .35s var(--ease),
               background .35s var(--ease), box-shadow .35s var(--ease);
@@ -501,7 +508,7 @@ section{position:relative}
 .siderail .rdot-glyph{
   position:absolute; left:36px; top:50%;
   transform:translateY(-50%) translateX(-6px);
-  font-family:var(--mono); font-size:9px;
+  font-family:var(--mono); font-size:var(--fs-label);
   letter-spacing:.28em; text-transform:uppercase;
   color:var(--text-muted);
   white-space:nowrap;
@@ -515,7 +522,7 @@ section{position:relative}
 }
 .siderail .rsig{
   margin-top:22px;
-  font-family:var(--mono); font-size:8.5px;
+  font-family:var(--mono); font-size:var(--fs-micro);
   letter-spacing:.42em; text-transform:uppercase;
   color:var(--text-soft);
   writing-mode:vertical-rl;
@@ -575,25 +582,25 @@ section{position:relative}
 .telem-card:hover{ border-color:var(--border-strong); }
 .telem-card .telem-eye{
   display:flex; align-items:center; justify-content:space-between;
-  font-size:9px; letter-spacing:.22em; text-transform:uppercase;
+  font-size:var(--fs-micro); letter-spacing:.22em; text-transform:uppercase;
   color:var(--text-soft); margin-bottom:10px;
   padding-bottom:8px; border-bottom:1px solid var(--border);
 }
 .telem-card .telem-row{
   display:flex; align-items:center; justify-content:space-between;
-  font-size:10px;
+  font-size:var(--fs-micro);
 }
 .telem-card .telem-row + .telem-row{ margin-top:6px; }
 .telem-card .telem-key{
-  font-size:9px; color:var(--text-soft);
+  font-size:var(--fs-micro); color:var(--text-soft);
   letter-spacing:.22em; text-transform:uppercase;
 }
 .telem-card .telem-val{
-  font-size:11px; color:var(--text);
+  font-size:var(--fs-label); color:var(--text);
   letter-spacing:.04em;
 }
 .telem-card .telem-mini{
-  font-size:9px; color:#5ddc89;
+  font-size:var(--fs-micro); color:#5ddc89;
   letter-spacing:.22em; text-transform:uppercase;
 }
 .telem-card .telem-blink{
@@ -690,7 +697,7 @@ section[data-screen-label="06 Contato"]::before     { animation-delay: 10.4s; }
   z-index:40;
   height:34px;
   display:flex; align-items:stretch;
-  font-family:var(--mono); font-size:9px;
+  font-family:var(--mono); font-size:var(--fs-micro);
   letter-spacing:.24em; text-transform:uppercase;
   color:var(--text-soft);
   background:rgba(10,10,10,0.88);
@@ -763,9 +770,8 @@ section[data-screen-label="06 Contato"]::before     { animation-delay: 10.4s; }
 }
 @media (max-width: 520px){
   .container{padding:0 24px}
-  .nav-brand{ font-size:10px; letter-spacing:.16em; }
-  .sysbar{ font-size:8px; height:30px; }
-  body{ padding-bottom: 30px; }
+  .nav-brand{ letter-spacing:.16em; }
+  .sysbar-cell{ padding: 0 10px; }
 }
 
 /* ── Reduced motion ───────────────────────────────────────── */
