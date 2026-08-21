@@ -1,4 +1,5 @@
 import React from 'react';
+import { Analytics } from '@vercel/analytics/react';
 import { CursorFollower } from './components/primitives.jsx';
 import { SideRail, SystemBar } from './components/tech.jsx';
 import Navbar from './components/Navbar.jsx';
@@ -38,6 +39,7 @@ export default function App() {
         <Contato />
       </main>
       <SystemBar />
+      <Analytics />
     </>
   );
 }
