@@ -202,7 +202,7 @@ export default function Certificados() {
 
   return (
     <section id="certificados" data-screen-label="04 Certificados" style={{
-      position: 'relative', padding: '120px 0', overflow: 'hidden',
+      position: 'relative', padding: '88px 0 120px', overflow: 'hidden',
     }}>
       <SectionNumber top={40} right={-20}>04</SectionNumber>
 

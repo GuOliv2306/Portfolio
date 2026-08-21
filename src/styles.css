@@ -194,6 +194,35 @@ button{font:inherit;background:none;border:none;color:inherit;cursor:pointer}
 }
 .olink:hover .arr{ transform: translate(3px,-3px); }
 
+/* ── Botão primário (CTA do hero, currículo) ──────────────── */
+.pbtn{
+  display:inline-flex; align-items:center; gap:14px;
+  min-height:44px; padding:14px 22px;
+  background:var(--accent); color:#0c0c0c;
+  font-family:var(--sans); font-weight:500; font-size:var(--fs-label);
+  letter-spacing:.22em; text-transform:uppercase;
+  box-shadow:0 0 0 var(--text);
+  transition: background .45s var(--ease), box-shadow .45s var(--ease);
+}
+.pbtn:hover,
+.pbtn:focus-visible{ background:var(--accent-strong); box-shadow:4px 4px 0 var(--text); }
+.pbtn .pbtn-icon{ font-size:14px; line-height:1; }
+
+/* ── Links de texto (rodapé, nome em depoimento) ──────────── */
+.foot-link,
+.dep-name-link{
+  color:var(--text-muted);
+  border-bottom:1px solid var(--border-strong);
+  padding-bottom:2px;
+  transition: color .35s var(--ease), border-color .35s var(--ease);
+}
+.foot-link{ font-family:var(--sans); font-size:var(--fs-label); letter-spacing:.04em; }
+.dep-name-link{ color:var(--text); }
+.foot-link:hover, .foot-link:focus-visible,
+.dep-name-link:hover, .dep-name-link:focus-visible{
+  color:var(--accent); border-color:var(--accent);
+}
+
 /* ── Typewriter caret ─────────────────────────────────────── */
 @keyframes caretBlink{ 50%{opacity:0} }
 .caret{
@@ -286,9 +315,10 @@ section{position:relative}
   .nav-toggle[aria-expanded="true"]{ color:var(--accent); }
   .nav-toggle[aria-expanded="true"] .nav-toggle-icon i{ background:var(--accent); }
 
-  /* z-index abaixo do nav (100) para a barra e o botão Fechar seguirem clicáveis */
+  /* Dentro da pilha do <nav> (z-index 100): fica abaixo da barra, que tem
+     z-index 2, e acima de todo o resto da página. */
   .nav-panel{
-    position:fixed; inset:0; z-index:90;
+    position:fixed; inset:0; z-index:1;
     display:flex; flex-direction:column;
     padding:96px 24px 40px;
     overflow-y:auto; overscroll-behavior:contain;
@@ -322,6 +352,11 @@ section{position:relative}
 .nav-panel-link.is-active .nav-panel-num{ color:var(--accent); }
 .nav-panel-arrow{ margin-left:auto; font-size:17px; color:var(--text-soft); }
 .nav-panel-link.is-active .nav-panel-arrow{ color:var(--accent); }
+.nav-panel-foot{
+  margin-top:32px; padding-top:24px;
+  border-top:1px solid var(--border);
+  display:flex; flex-wrap:wrap; gap:12px;
+}
 
 /* ── Hero background · timeline sincronizada com o typewriter ── */
 @keyframes heroDots   { to { opacity: 1; } }

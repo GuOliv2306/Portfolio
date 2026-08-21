@@ -323,7 +323,9 @@ export default function Projetos() {
   const close = React.useCallback(() => setActive(null), []);
   return (
     <section id="projetos" data-screen-label="03 Projetos" style={{
-      position: 'relative', padding: '120px 0', overflow: 'hidden',
+      // O respiro do último card já separa as seções; 120px dos dois lados
+      // deixavam ~350px de tela vazia, que lia como "acabou o site".
+      position: 'relative', padding: '120px 0 72px', overflow: 'hidden',
     }}>
       <SectionNumber top={40} left={-30} right="auto">03</SectionNumber>
 

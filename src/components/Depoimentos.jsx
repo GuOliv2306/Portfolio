@@ -8,6 +8,8 @@ const ITEMS = [
     name: 'Matheus Pestana',
     role: 'Professor de Extração e Análise de Dados',
     context: 'Gerente do projeto de extração de dados de segurança',
+    linkedin: '', // preencha com o perfil para o nome virar link
+
   },
   {
     num: '02',
@@ -15,6 +17,8 @@ const ITEMS = [
     name: 'Nicholas Costa',
     role: 'ex-Diretor de Digital Development',
     context: 'FGV Jr. — Consultoria Júnior da FGV',
+    linkedin: '', // preencha com o perfil para o nome virar link
+
   },
 ];
 
@@ -84,7 +88,14 @@ export default function Depoimentos() {
                     fontFamily: 'var(--sans)', fontWeight: 600, fontSize: 'var(--fs-meta)',
                     color: 'var(--text)', letterSpacing: '-0.01em',
                   }}>
-                    {it.name}
+                    {/* Prova social fica mais forte com o perfil linkado; sem
+                        URL preenchida em ITEMS, o nome segue como texto. */}
+                    {it.linkedin ? (
+                      <a href={it.linkedin} className="dep-name-link"
+                        target="_blank" rel="noreferrer noopener">
+                        {it.name} <span aria-hidden="true">↗</span>
+                      </a>
+                    ) : it.name}
                   </div>
                   <div style={{ fontFamily: 'var(--sans)', fontSize: 'var(--fs-meta)', color: 'var(--text-muted)' }}>
                     {it.role}

@@ -88,6 +88,20 @@ export function OutlineLink({ href, children, external = true }) {
   );
 }
 
+export function PrimaryLink({ href, children, icon = '↓', external = false, download = false }) {
+  return (
+    <a href={href}
+      className="pbtn"
+      data-magnetic
+      target={external ? '_blank' : undefined}
+      rel={external ? 'noreferrer noopener' : undefined}
+      download={download || undefined}>
+      <span>{children}</span>
+      <span className="pbtn-icon" aria-hidden="true">{icon}</span>
+    </a>
+  );
+}
+
 export function Tag({ children, accent = false }) {
   return (
     <span style={{

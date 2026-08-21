@@ -1,5 +1,5 @@
 import React from 'react';
-import { EMAIL, LINKEDIN } from '../data.js';
+import { EMAIL, LINKEDIN, CV_URL } from '../data.js';
 import { Reveal, SectionNumber, SectionEyebrow, OutlineLink } from './primitives.jsx';
 
 function Meta2({ label, children }) {
@@ -20,13 +20,21 @@ function Footer() {
       <div style={{ fontFamily: 'var(--sans)', fontWeight: 300, fontSize: 'var(--fs-label)', color: 'var(--text-soft)' }}>
         © {new Date().getFullYear()} Gustavo de Oliveira · Comunicação Digital × Dados
       </div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-        <span aria-hidden="true" style={{
-          width: 6, height: 6, borderRadius: '50%', background: 'var(--accent)',
-          animation: 'pulseDot 2.4s ease-in-out infinite',
-        }} />
-        <span className="label" style={{ color: 'var(--text-muted)', fontSize: 'var(--fs-label)' }}>
-          Versão 2 · Studio Editorial
+      {/* A página não termina mais sem ação: e-mail e currículo ficam à mão
+          na última dobra, não só no meio da seção Perfil. */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 20, flexWrap: 'wrap' }}>
+        <a href={`mailto:${EMAIL}`} className="foot-link">{EMAIL}</a>
+        <a href={CV_URL} className="foot-link" target="_blank" rel="noreferrer noopener">
+          Baixar currículo <span aria-hidden="true">↓</span>
+        </a>
+        <span style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <span aria-hidden="true" style={{
+            width: 6, height: 6, borderRadius: '50%', background: 'var(--accent)',
+            animation: 'pulseDot 2.4s ease-in-out infinite',
+          }} />
+          <span className="label" style={{ color: 'var(--text-muted)', fontSize: 'var(--fs-label)' }}>
+            Versão 2 · Studio Editorial
+          </span>
         </span>
       </div>
     </div>
@@ -76,6 +84,7 @@ export default function Contato() {
           <div style={{ marginTop: 64, display: 'flex', gap: 14, flexWrap: 'wrap' }}>
             <OutlineLink href={`mailto:${EMAIL}`} external={false}>Email</OutlineLink>
             <OutlineLink href={LINKEDIN}>LinkedIn</OutlineLink>
+            <OutlineLink href={CV_URL}>Currículo</OutlineLink>
           </div>
         </Reveal>
 

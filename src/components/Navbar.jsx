@@ -1,5 +1,5 @@
 import React from 'react';
-import { NAV, SECTIONS } from '../data.js';
+import { NAV, SECTIONS, EMAIL, CV_URL } from '../data.js';
 import { StatusChip } from './tech.jsx';
 import { useScrollLock, useFocusTrap } from './primitives.jsx';
 import { scrollToSection } from '../nav.js';
@@ -43,19 +43,24 @@ export default function Navbar() {
   };
 
   const solid = scrolled || open;
+  // backdrop-filter faz do <nav> bloco contentor de descendentes fixed — o
+  // painel ficaria preso aos 72px da barra em vez de cobrir a viewport.
+  // Com o painel aberto o desfoque não tem o que desfocar, então sai fora.
+  const blur = solid && !open ? 'blur(16px) saturate(140%)' : 'none';
 
   return (
     <nav ref={navRef} style={{
       position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
-      background: solid ? 'rgba(12,12,12,0.92)' : 'transparent',
-      backdropFilter: solid ? 'blur(16px) saturate(140%)' : 'none',
-      WebkitBackdropFilter: solid ? 'blur(16px) saturate(140%)' : 'none',
+      background: open ? 'var(--bg)' : (solid ? 'rgba(12,12,12,0.92)' : 'transparent'),
+      backdropFilter: blur,
+      WebkitBackdropFilter: blur,
       borderBottom: `1px solid ${solid ? 'var(--border)' : 'transparent'}`,
       transition: 'background .45s var(--ease), border-color .45s var(--ease), backdrop-filter .45s var(--ease)',
     }}>
       <div className="container" style={{
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         height: 72,
+        position: 'relative', zIndex: 2, // a barra pinta acima do painel
       }}>
         <div className="nav-left" style={{ display: 'flex', alignItems: 'center', gap: 18 }}>
           <a href="#capa"
@@ -124,6 +129,16 @@ export default function Navbar() {
               );
             })}
           </ul>
+
+          {/* Contato ao alcance da mão: antes ele só existia a 97% da rolagem. */}
+          <div className="nav-panel-foot">
+            <a className="olink" href={`mailto:${EMAIL}`}>
+              <span className="arr" aria-hidden="true">↗</span><span>Email</span>
+            </a>
+            <a className="olink" href={CV_URL} target="_blank" rel="noreferrer noopener">
+              <span className="arr" aria-hidden="true">↗</span><span>Currículo</span>
+            </a>
+          </div>
         </div>
       )}
     </nav>

@@ -1,6 +1,6 @@
 import React from 'react';
-import { EMAIL, LINKEDIN } from '../data.js';
-import { Reveal, OutlineLink, Typewriter, useReveal } from './primitives.jsx';
+import { EMAIL, LINKEDIN, CV_URL } from '../data.js';
+import { Reveal, OutlineLink, PrimaryLink, Typewriter, useReveal } from './primitives.jsx';
 import { HeroTelemetry, attachDecodeHover } from './tech.jsx';
 import HeroBackground from './HeroBackground.jsx';
 
@@ -126,12 +126,20 @@ export default function Hero() {
           ))}
         </div>
 
+        {/* "Disponível para projetos" agora oferece o próximo passo em vez de
+            só anunciar: quem chega pelo topo tem para onde ir. */}
         <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap' }}>
+          <Reveal delay={T_AFTER_NAME + 240 + PHRASES.length * 120 + 60} immediate>
+            <PrimaryLink href="#projetos" icon="↓">Ver projetos</PrimaryLink>
+          </Reveal>
           <Reveal delay={T_AFTER_NAME + 240 + PHRASES.length * 120 + 120} immediate>
             <OutlineLink href={`mailto:${EMAIL}`} external={false}>Email</OutlineLink>
           </Reveal>
           <Reveal delay={T_AFTER_NAME + 240 + PHRASES.length * 120 + 240} immediate>
             <OutlineLink href={LINKEDIN}>LinkedIn</OutlineLink>
+          </Reveal>
+          <Reveal delay={T_AFTER_NAME + 240 + PHRASES.length * 120 + 360} immediate>
+            <OutlineLink href={CV_URL}>Currículo</OutlineLink>
           </Reveal>
         </div>
 

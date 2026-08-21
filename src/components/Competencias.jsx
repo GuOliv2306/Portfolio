@@ -1,6 +1,6 @@
 import React from 'react';
 import { SKILLS, TAGS, CV_URL } from '../data.js';
-import { Reveal, SectionNumber, SectionEyebrow, Tag } from './primitives.jsx';
+import { PrimaryLink, Reveal, SectionNumber, SectionEyebrow, Tag } from './primitives.jsx';
 
 const NEXT_SECTIONS = [
   ['03', 'Projetos', '#projetos'],
@@ -54,29 +54,10 @@ function SkillRow({ skill }) {
   );
 }
 
+// Mesmo visual de antes, agora na classe .pbtn compartilhada com o CTA do
+// hero e o rodapé — e com estado de foco, que o hover inline não tinha.
 function CVButton() {
-  const [hover, setHover] = React.useState(false);
-  return (
-    <a href={CV_URL}
-      data-magnetic
-      target="_blank"
-      rel="noreferrer noopener"
-      download
-      onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}
-      style={{
-        display: 'inline-flex', alignItems: 'center', gap: 14,
-        padding: '14px 22px',
-        background: hover ? 'var(--accent-strong)' : 'var(--accent)',
-        color: '#0c0c0c',
-        fontFamily: 'var(--sans)', fontWeight: 500, fontSize: 'var(--fs-label)',
-        letterSpacing: '.22em', textTransform: 'uppercase',
-        transition: 'background .45s var(--ease), box-shadow .45s var(--ease)',
-        boxShadow: hover ? '4px 4px 0 var(--text)' : '0 0 0 var(--text)',
-      }}>
-      <span>Baixar Currículo</span>
-      <span style={{ fontSize: 13 }}>↓</span>
-    </a>
-  );
+  return <PrimaryLink href={CV_URL} external download>Baixar Currículo</PrimaryLink>;
 }
 
 export default function Competencias() {
