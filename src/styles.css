@@ -776,10 +776,11 @@ section[data-screen-label="06 Contato"]::before     { animation-delay: 10.4s; }
   overflow:hidden;
 }
 .sysbar-bar-fill{
-  position:absolute; left:0; top:0; bottom:0;
+  position:absolute; left:0; top:0; bottom:0; width:100%;
+  transform-origin:left center;
   background:var(--accent);
   box-shadow: 0 0 6px var(--accent-45);
-  transition: width .25s linear;
+  will-change: transform;
 }
 
 /* ── Responsivo ───────────────────────────────────────────── */

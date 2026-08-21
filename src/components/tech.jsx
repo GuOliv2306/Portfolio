@@ -1,6 +1,6 @@
 import React from 'react';
 import { SECTIONS } from '../data.js';
-import { useScrollValue, selActiveId, selProgress } from '../scrollStore.js';
+import { useScrollValue, selActiveId, selPercent } from '../scrollStore.js';
 
 const LABEL_BY_ID = Object.fromEntries(SECTIONS.map((x) => [x.id, x.label]));
 
@@ -229,16 +229,18 @@ function SectionLabel() {
   return <span style={{ color: 'var(--text-muted)' }}>{LABEL_BY_ID[id]}</span>;
 }
 
+// scaleX em vez de width: a barra passa a ser trabalho de compositor, sem
+// forçar layout a cada frame de rolagem.
 function ScrollProgress() {
-  const scroll = useScrollValue(selProgress);
+  const pct = useScrollValue(selPercent);
   return (
     <span className="sysbar-cell sysbar-progress">
       SCROLL
       <span className="sysbar-bar">
-        <span className="sysbar-bar-fill" style={{ width: `${(scroll * 100).toFixed(1)}%` }} />
+        <span className="sysbar-bar-fill" style={{ transform: `scaleX(${(pct / 100).toFixed(2)})` }} />
       </span>
       <span style={{ fontVariantNumeric: 'tabular-nums', color: 'var(--text-muted)' }}>
-        {(scroll * 100).toFixed(0).padStart(2, '0')}%
+        {String(pct).padStart(2, '0')}%
       </span>
     </span>
   );

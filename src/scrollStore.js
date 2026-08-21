@@ -123,6 +123,10 @@ function subscribe(fn) {
 export const selActiveId = (s) => s.activeId;
 export const selScrolled = (s) => s.scrolled;
 export const selProgress = (s) => s.progress;
+// Percentual inteiro: a barra só precisa de 1% de granularidade (0,8px em
+// 80px), e assim ela re-renderiza ~100x na página inteira em vez de a cada
+// frame de rolagem.
+export const selPercent = (s) => Math.round(s.progress * 100);
 
 // Uma fatia por consumidor: o menu não re-renderiza quando só o progresso
 // da barra muda.
