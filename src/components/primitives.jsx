@@ -231,7 +231,14 @@ export function CursorFollower() {
 
     const onMove = (e) => {
       mx = e.clientX; my = e.clientY;
-      if (!visible) { visible = true; follow.classList.add('is-on'); }
+      if (!visible) {
+        visible = true;
+        follow.classList.add('is-on');
+        // Só a partir daqui o cursor customizado tem uma posição real para
+        // ocupar. Antes disso — e se o script falhar ou nem rodar — o ponteiro
+        // nativo continua na tela: o visitante nunca fica sem cursor.
+        document.documentElement.classList.add('has-cursor');
+      }
       const m = findMagnet();
       if (m !== magnetEl) {
         magnetEl = m;
@@ -276,6 +283,7 @@ export function CursorFollower() {
       window.removeEventListener('scroll', onScroll);
       document.removeEventListener('click', refreshState, true);
       cancelAnimationFrame(raf);
+      document.documentElement.classList.remove('has-cursor');
       follow.remove();
     };
   }, []);

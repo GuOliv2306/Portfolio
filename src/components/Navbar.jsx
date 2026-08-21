@@ -3,8 +3,8 @@ import { NAV, SECTIONS } from '../data.js';
 import { StatusChip } from './tech.jsx';
 import { useScrollLock, useFocusTrap } from './primitives.jsx';
 import { scrollToSection } from '../nav.js';
+import { useScrollValue, selActiveId, selScrolled } from '../scrollStore.js';
 
-const NAV_IDS = NAV.map((n) => n.href.slice(1));
 const NUM_BY_ID = Object.fromEntries(SECTIONS.map((s) => [s.id, s.num]));
 
 // Mesmo limiar do CSS (.nav-toggle / .nav-links). Acima dele o painel nunca
@@ -12,40 +12,13 @@ const NUM_BY_ID = Object.fromEntries(SECTIONS.map((s) => [s.id, s.num]));
 const MOBILE_QUERY = '(max-width: 760px)';
 
 export default function Navbar() {
-  const [scrolled, setScrolled] = React.useState(false);
-  const [active, setActive] = React.useState('capa');
+  const scrolled = useScrollValue(selScrolled);
+  const active = useScrollValue(selActiveId);
   const [open, setOpen] = React.useState(false);
   const navRef = React.useRef(null);
 
   useScrollLock(open);
   useFocusTrap(navRef, open, '.nav-panel-link');
-
-  React.useEffect(() => {
-    let ticking = false;
-    const compute = () => {
-      setScrolled((prev) => {
-        const s = window.scrollY > 24;
-        return prev === s ? prev : s;
-      });
-      const y = window.scrollY + 140;
-      for (let i = NAV_IDS.length - 1; i >= 0; i--) {
-        const el = document.getElementById(NAV_IDS[i]);
-        if (el && el.offsetTop <= y) {
-          setActive((prev) => (prev === NAV_IDS[i] ? prev : NAV_IDS[i]));
-          break;
-        }
-      }
-      ticking = false;
-    };
-    const onScroll = () => {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(compute);
-    };
-    compute();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
 
   React.useEffect(() => {
     if (!open) return undefined;
@@ -66,7 +39,7 @@ export default function Navbar() {
     e.preventDefault();
     e.stopPropagation();
     setOpen(false);
-    scrollToSection(href.slice(1));
+    scrollToSection(href.slice(1), { push: true });
   };
 
   const solid = scrolled || open;

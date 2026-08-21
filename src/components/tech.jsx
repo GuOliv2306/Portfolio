@@ -1,5 +1,8 @@
 import React from 'react';
 import { SECTIONS } from '../data.js';
+import { useScrollValue, selActiveId, selProgress } from '../scrollStore.js';
+
+const LABEL_BY_ID = Object.fromEntries(SECTIONS.map((x) => [x.id, x.label]));
 
 const DECODE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_//<>';
 
@@ -48,40 +51,8 @@ export function StatusChip({ children }) {
   );
 }
 
-// Encontra a seção atual pela posição de scroll, com throttle via rAF.
-function useActiveSection(select) {
-  const [value, setValue] = React.useState(() => select(SECTIONS[0]));
-  React.useEffect(() => {
-    let ticking = false;
-    const compute = () => {
-      const y = window.scrollY + window.innerHeight * 0.32;
-      for (let i = SECTIONS.length - 1; i >= 0; i--) {
-        const el = document.getElementById(SECTIONS[i].id);
-        if (el && el.offsetTop <= y) {
-          const next = select(SECTIONS[i]);
-          setValue((prev) => (prev === next ? prev : next));
-          break;
-        }
-      }
-      ticking = false;
-    };
-    const onScroll = () => {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(compute);
-    };
-    compute();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, [select]);
-  return value;
-}
-
-const pickId = (s) => s.id;
-const pickLabel = (s) => s.label;
-
 export function SideRail() {
-  const active = useActiveSection(pickId);
+  const active = useScrollValue(selActiveId);
   const [revealed, setRevealed] = React.useState(false);
 
   // Entra depois do nome no hero terminar de digitar.
@@ -253,51 +224,49 @@ export function HeroTelemetry() {
   );
 }
 
-export function SystemBar() {
+function SectionLabel() {
+  const id = useScrollValue(selActiveId);
+  return <span style={{ color: 'var(--text-muted)' }}>{LABEL_BY_ID[id]}</span>;
+}
+
+function ScrollProgress() {
+  const scroll = useScrollValue(selProgress);
+  return (
+    <span className="sysbar-cell sysbar-progress">
+      SCROLL
+      <span className="sysbar-bar">
+        <span className="sysbar-bar-fill" style={{ width: `${(scroll * 100).toFixed(1)}%` }} />
+      </span>
+      <span style={{ fontVariantNumeric: 'tabular-nums', color: 'var(--text-muted)' }}>
+        {(scroll * 100).toFixed(0).padStart(2, '0')}%
+      </span>
+    </span>
+  );
+}
+
+function Clock() {
   const time = useClock();
-  const section = useActiveSection(pickLabel);
-  const [scroll, setScroll] = React.useState(0);
+  return (
+    <span className="sysbar-cell" style={{ fontVariantNumeric: 'tabular-nums' }}>
+      {pad(time.getHours())}:{pad(time.getMinutes())}:<span style={{ color: 'var(--accent)' }}>{pad(time.getSeconds())}</span>
+    </span>
+  );
+}
 
-  React.useEffect(() => {
-    let ticking = false;
-    const compute = () => {
-      const h = document.documentElement;
-      const max = h.scrollHeight - h.clientHeight;
-      const s = max > 0 ? window.scrollY / max : 0;
-      setScroll((prev) => (Math.abs(prev - s) < 0.002 ? prev : s));
-      ticking = false;
-    };
-    const onScroll = () => {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(compute);
-    };
-    compute();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
-
+// Cada célula viva é um componente próprio: o relógio (1x/s) e o progresso
+// (a cada frame de scroll) não re-renderizam o resto da barra.
+export function SystemBar() {
   return (
     <div className="sysbar" role="status" aria-label="Barra de sistema">
       <span className="sysbar-cell">
         <span className="dot-live" /> LIVE
         <span className="sysbar-sep" aria-hidden="true">/</span>
-        <span style={{ color: 'var(--text-muted)' }}>{section}</span>
+        <SectionLabel />
       </span>
       <span className="sysbar-cell">LAT 22.91° S · LNG 43.17° W</span>
-      <span className="sysbar-cell sysbar-progress">
-        SCROLL
-        <span className="sysbar-bar">
-          <span className="sysbar-bar-fill" style={{ width: `${(scroll * 100).toFixed(1)}%` }} />
-        </span>
-        <span style={{ fontVariantNumeric: 'tabular-nums', color: 'var(--text-muted)' }}>
-          {(scroll * 100).toFixed(0).padStart(2, '0')}%
-        </span>
-      </span>
+      <ScrollProgress />
       <span className="sysbar-cell">SYS_v2 · BUILD 2026.05</span>
-      <span className="sysbar-cell" style={{ fontVariantNumeric: 'tabular-nums' }}>
-        {pad(time.getHours())}:{pad(time.getMinutes())}:<span style={{ color: 'var(--accent)' }}>{pad(time.getSeconds())}</span>
-      </span>
+      <Clock />
     </div>
   );
 }

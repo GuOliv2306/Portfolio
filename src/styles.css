@@ -44,8 +44,12 @@ button{font:inherit;background:none;border:none;color:inherit;cursor:pointer}
 /* ── Custom cursor · ring + pin com magnetismo ──────────────
    Estados: is-on / is-hover / is-text / is-click / is-magnet
    Só transform/opacity → 0 reflows, compositing na GPU. */
+/* O cursor nativo só some depois que o customizado assume de fato
+   (classe posta pelo JS no primeiro mousemove). Sem JS, com o script
+   quebrado ou antes do primeiro movimento, o ponteiro do sistema segue lá. */
 @media (hover:hover) and (pointer:fine){
-  *, *::before, *::after{ cursor:none !important; }
+  html.has-cursor, html.has-cursor *,
+  html.has-cursor *::before, html.has-cursor *::after{ cursor:none !important; }
 }
 .cursor-follow{
   position:fixed; top:0; left:0;
@@ -119,6 +123,20 @@ button{font:inherit;background:none;border:none;color:inherit;cursor:pointer}
 @media (hover:none),(pointer:coarse){
   .cursor-follow{ display:none !important; }
 }
+
+/* ── Skip link · visível só em foco ────────────────────────── */
+.skip{
+  position:fixed; top:10px; left:10px; z-index:300;
+  padding:13px 20px;
+  background:var(--accent); color:#0c0c0c;
+  font-family:var(--sans); font-weight:500; font-size:var(--fs-label);
+  letter-spacing:.18em; text-transform:uppercase;
+  transform: translateY(-200%);
+  transition: transform .25s var(--ease);
+}
+.skip:focus{ transform:none; }
+/* foco programático do skip link não desenha contorno na página inteira */
+#conteudo:focus{ outline:none; }
 
 /* ── Nav link com underline deslizante ────────────────────── */
 .nav-link{
