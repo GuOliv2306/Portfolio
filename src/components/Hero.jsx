@@ -104,7 +104,7 @@ export default function Hero() {
 
         <Reveal delay={T_AFTER_NAME} immediate>
           <div className="label" style={{ color: 'var(--text-muted)', marginBottom: 32 }}>
-            Comunicação Digital · FGV · 3º Período
+            Comunicação Digital · FGV
           </div>
         </Reveal>
 

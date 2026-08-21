@@ -119,7 +119,7 @@ export default function Competencias() {
               <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 14 }}>
                 <li>
                   <div style={{ fontFamily: 'var(--serif)', fontSize: 18, color: 'var(--text)' }}>FGV · Comunicação Digital</div>
-                  <div className="label" style={{ marginTop: 4 }}>2024 — Presente · 3º Período</div>
+                  <div className="label" style={{ marginTop: 4 }}>2024 — Presente</div>
                 </li>
                 <li>
                   <div style={{ fontFamily: 'var(--serif)', fontSize: 18, color: 'var(--text-muted)' }}>FGV EMAp · Ciência de Dados & IA</div>
