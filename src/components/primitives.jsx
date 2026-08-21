@@ -281,3 +281,78 @@ export function CursorFollower() {
   }, []);
   return null;
 }
+
+/* ── Trava de scroll do body ───────────────────────────────────
+   Contador compartilhado: modal e menu mobile podem coexistir sem
+   que o primeiro a fechar devolva o scroll enquanto o outro segue
+   aberto. useLayoutEffect para que a liberação aconteça antes de
+   qualquer window.scrollTo disparado no mesmo clique. */
+let scrollLocks = 0;
+let savedOverflow = '';
+
+export function useScrollLock(active) {
+  React.useLayoutEffect(() => {
+    if (!active) return undefined;
+    if (scrollLocks === 0) {
+      savedOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+    }
+    scrollLocks += 1;
+    return () => {
+      scrollLocks = Math.max(0, scrollLocks - 1);
+      if (scrollLocks === 0) document.body.style.overflow = savedOverflow;
+    };
+  }, [active]);
+}
+
+/* ── Focus trap ────────────────────────────────────────────────
+   Move o foco para dentro ao abrir, prende o Tab e devolve o foco
+   ao elemento de origem ao fechar. */
+const FOCUSABLE = [
+  'a[href]', 'button:not([disabled])', 'input:not([disabled])',
+  'select:not([disabled])', 'textarea:not([disabled])',
+  '[tabindex]:not([tabindex="-1"])',
+].join(',');
+
+// getClientRects() cobre display:none e ancestrais ocultos, e continua
+// correto dentro de contêineres position:fixed (onde offsetParent é null).
+const visibleFocusable = (node) =>
+  Array.prototype.filter.call(node.querySelectorAll(FOCUSABLE), (el) => el.getClientRects().length > 0);
+
+export function useFocusTrap(ref, active, initialSelector) {
+  React.useEffect(() => {
+    if (!active) return undefined;
+    const node = ref.current;
+    if (!node) return undefined;
+
+    const origin = document.activeElement;
+    const first = (initialSelector && node.querySelector(initialSelector)) || visibleFocusable(node)[0];
+    if (first) first.focus({ preventScroll: true });
+
+    const onKey = (e) => {
+      if (e.key !== 'Tab') return;
+      const items = visibleFocusable(node);
+      if (!items.length) return;
+      const head = items[0];
+      const tail = items[items.length - 1];
+      if (!node.contains(document.activeElement)) {
+        e.preventDefault();
+        head.focus({ preventScroll: true });
+      } else if (e.shiftKey && document.activeElement === head) {
+        e.preventDefault();
+        tail.focus({ preventScroll: true });
+      } else if (!e.shiftKey && document.activeElement === tail) {
+        e.preventDefault();
+        head.focus({ preventScroll: true });
+      }
+    };
+
+    document.addEventListener('keydown', onKey, true);
+    return () => {
+      document.removeEventListener('keydown', onKey, true);
+      if (origin && typeof origin.focus === 'function' && origin.isConnected) {
+        origin.focus({ preventScroll: true });
+      }
+    };
+  }, [ref, active, initialSelector]);
+}

@@ -1,12 +1,24 @@
 import React from 'react';
-import { NAV } from '../data.js';
+import { NAV, SECTIONS } from '../data.js';
 import { StatusChip } from './tech.jsx';
+import { useScrollLock, useFocusTrap } from './primitives.jsx';
+import { scrollToSection } from '../nav.js';
 
 const NAV_IDS = NAV.map((n) => n.href.slice(1));
+const NUM_BY_ID = Object.fromEntries(SECTIONS.map((s) => [s.id, s.num]));
+
+// Mesmo limiar do CSS (.nav-toggle / .nav-links). Acima dele o painel nunca
+// deve ficar aberto — daí o listener de breakpoint.
+const MOBILE_QUERY = '(max-width: 760px)';
 
 export default function Navbar() {
   const [scrolled, setScrolled] = React.useState(false);
   const [active, setActive] = React.useState('capa');
+  const [open, setOpen] = React.useState(false);
+  const navRef = React.useRef(null);
+
+  useScrollLock(open);
+  useFocusTrap(navRef, open, '.nav-panel-link');
 
   React.useEffect(() => {
     let ticking = false;
@@ -35,13 +47,37 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  React.useEffect(() => {
+    if (!open) return undefined;
+    const onKey = (e) => { if (e.key === 'Escape') setOpen(false); };
+    const mq = window.matchMedia(MOBILE_QUERY);
+    const onBreakpoint = () => { if (!mq.matches) setOpen(false); };
+    window.addEventListener('keydown', onKey);
+    mq.addEventListener('change', onBreakpoint);
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      mq.removeEventListener('change', onBreakpoint);
+    };
+  }, [open]);
+
+  // Fecha o painel e só então rola: a trava de scroll do body precisa sair
+  // antes do window.scrollTo (scrollToSection espera um rAF).
+  const goTo = (e, href) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setOpen(false);
+    scrollToSection(href.slice(1));
+  };
+
+  const solid = scrolled || open;
+
   return (
-    <nav style={{
+    <nav ref={navRef} style={{
       position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
-      background: scrolled ? 'rgba(12,12,12,0.92)' : 'transparent',
-      backdropFilter: scrolled ? 'blur(16px) saturate(140%)' : 'none',
-      WebkitBackdropFilter: scrolled ? 'blur(16px) saturate(140%)' : 'none',
-      borderBottom: `1px solid ${scrolled ? 'var(--border)' : 'transparent'}`,
+      background: solid ? 'rgba(12,12,12,0.92)' : 'transparent',
+      backdropFilter: solid ? 'blur(16px) saturate(140%)' : 'none',
+      WebkitBackdropFilter: solid ? 'blur(16px) saturate(140%)' : 'none',
+      borderBottom: `1px solid ${solid ? 'var(--border)' : 'transparent'}`,
       transition: 'background .45s var(--ease), border-color .45s var(--ease), backdrop-filter .45s var(--ease)',
     }}>
       <div className="container" style={{
@@ -66,7 +102,8 @@ export default function Navbar() {
             <StatusChip>SYS_v2 · ONLINE</StatusChip>
           </span>
         </div>
-        <ul style={{ display: 'flex', gap: 34, listStyle: 'none' }}>
+
+        <ul className="nav-links">
           {NAV.map((n, i) => {
             const isActive = n.href.slice(1) === active;
             return (
@@ -80,7 +117,42 @@ export default function Navbar() {
             );
           })}
         </ul>
+
+        <button
+          type="button"
+          className="nav-toggle nav-item"
+          style={{ animationDelay: '220ms' }}
+          aria-expanded={open}
+          aria-controls="nav-panel"
+          onClick={() => setOpen((v) => !v)}>
+          <span className={`nav-toggle-icon${open ? ' is-open' : ''}`} aria-hidden="true">
+            <i /><i />
+          </span>
+          <span>{open ? 'Fechar' : 'Menu'}</span>
+        </button>
       </div>
+
+      {open && (
+        <div id="nav-panel" className="nav-panel">
+          <ul className="nav-panel-list">
+            {NAV.map((n) => {
+              const id = n.href.slice(1);
+              return (
+                <li key={n.href}>
+                  <a href={n.href}
+                    className={`nav-panel-link${id === active ? ' is-active' : ''}`}
+                    aria-current={id === active ? 'true' : undefined}
+                    onClick={(e) => goTo(e, n.href)}>
+                    <span className="nav-panel-num" aria-hidden="true">{NUM_BY_ID[id] || ''}</span>
+                    <span>{n.label}</span>
+                    <span className="nav-panel-arrow" aria-hidden="true">→</span>
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      )}
     </nav>
   );
 }

@@ -219,16 +219,84 @@ section{position:relative}
   white-space:nowrap;
 }
 /* A marca nunca encolhe; a faixa de links rola em vez de sobrepor —
-   assim o nav sobrevive a qualquer largura de fonte (inclusive fallback). */
+   assim o nav sobrevive a qualquer largura de fonte (inclusive fallback).
+   Abaixo de 760px a faixa some inteira e dá lugar ao painel colapsável. */
 .nav-left{ flex-shrink:0; }
-nav ul{
+.nav-links{
+  display:flex;
+  gap:34px;
+  list-style:none;
   min-width:0;
   overflow-x:auto;
   scrollbar-width:none;
   -ms-overflow-style:none;
 }
-nav ul::-webkit-scrollbar{ display:none; }
-nav li{ flex-shrink:0; }
+.nav-links::-webkit-scrollbar{ display:none; }
+.nav-links li{ flex-shrink:0; }
+
+/* ── Menu mobile · botão + painel em tela cheia ────────────── */
+.nav-toggle{ display:none; }
+.nav-panel{ display:none; }
+
+@media (max-width:760px){
+  .nav-links{ display:none; }
+  .nav-toggle{
+    display:inline-flex; align-items:center; gap:12px;
+    min-height:44px; padding:10px 2px 10px 14px;
+    font-family:var(--sans); font-weight:500; font-size:12px;
+    letter-spacing:.22em; text-transform:uppercase;
+    color:var(--text);
+  }
+  .nav-toggle-icon{
+    display:inline-flex; flex-direction:column; justify-content:center;
+    gap:5px; width:18px; height:12px;
+  }
+  .nav-toggle-icon i{
+    display:block; height:1px; width:100%;
+    background:var(--text);
+    transition: transform .3s var(--ease), opacity .3s var(--ease);
+  }
+  .nav-toggle-icon.is-open i:first-child{ transform: translateY(3px) rotate(45deg); }
+  .nav-toggle-icon.is-open i:last-child { transform: translateY(-3px) rotate(-45deg); }
+  .nav-toggle[aria-expanded="true"]{ color:var(--accent); }
+  .nav-toggle[aria-expanded="true"] .nav-toggle-icon i{ background:var(--accent); }
+
+  /* z-index abaixo do nav (100) para a barra e o botão Fechar seguirem clicáveis */
+  .nav-panel{
+    position:fixed; inset:0; z-index:90;
+    display:flex; flex-direction:column;
+    padding:96px 24px 40px;
+    overflow-y:auto; overscroll-behavior:contain;
+    background:rgba(10,10,10,0.97);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+            backdrop-filter: blur(18px) saturate(140%);
+    animation: navPanelIn .26s var(--ease);
+  }
+}
+@keyframes navPanelIn{
+  from{ opacity:0; transform:translateY(-10px); }
+  to  { opacity:1; transform:none; }
+}
+.nav-panel-list{ list-style:none; display:flex; flex-direction:column; }
+.nav-panel-link{
+  display:flex; align-items:center; gap:18px;
+  min-height:56px; padding:14px 2px;
+  border-bottom:1px solid var(--border);
+  font-family:var(--sans); font-weight:500; font-size:15px;
+  letter-spacing:.14em; text-transform:uppercase;
+  color:var(--text-muted);
+  transition: color .3s var(--ease);
+}
+.nav-panel-link:hover{ color:var(--text); }
+.nav-panel-link.is-active{ color:var(--accent); }
+.nav-panel-num{
+  font-family:var(--mono); font-size:12px;
+  letter-spacing:.2em; color:var(--text-soft);
+  transition: color .3s var(--ease);
+}
+.nav-panel-link.is-active .nav-panel-num{ color:var(--accent); }
+.nav-panel-arrow{ margin-left:auto; font-size:17px; color:var(--text-soft); }
+.nav-panel-link.is-active .nav-panel-arrow{ color:var(--accent); }
 
 /* ── Hero background · timeline sincronizada com o typewriter ── */
 @keyframes heroDots   { to { opacity: 1; } }
@@ -295,6 +363,53 @@ nav li{ flex-shrink:0; }
     rgba(244,240,235,0.06) 0 1px, transparent 1px 8px);
   opacity:.5;
   pointer-events:none;
+}
+
+/* ── Rodapé do card de projeto · gatilho + links diretos ──── */
+.proj-foot{
+  margin-top:20px; padding-top:18px;
+  border-top:1px solid var(--border);
+  display:flex; align-items:center; justify-content:space-between;
+  gap:14px; flex-wrap:wrap;
+}
+.proj-cta{
+  display:inline-flex; align-items:center; gap:12px;
+  min-height:44px;
+  font-family:var(--sans); font-weight:500; font-size:12px;
+  letter-spacing:.22em; text-transform:uppercase;
+  color:var(--text);
+  transition: color .4s var(--ease);
+}
+.glow-host:hover .proj-cta,
+.proj-cta:hover,
+.proj-cta:focus-visible{ color:var(--accent); }
+.proj-cta-arrow{
+  font-size:18px; line-height:1;
+  transition: transform .5s var(--ease);
+}
+.glow-host:hover .proj-cta-arrow,
+.proj-cta:hover .proj-cta-arrow,
+.proj-cta:focus-visible .proj-cta-arrow{ transform: translateX(6px); }
+
+.proj-links{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.proj-link{
+  display:inline-flex; align-items:center; gap:7px;
+  min-height:38px; padding:8px 11px;
+  border:1px solid var(--border-strong);
+  font-family:var(--mono); font-size:11px;
+  letter-spacing:.14em; text-transform:uppercase;
+  color:var(--text-muted);
+  white-space:nowrap;
+  transition: color .35s var(--ease), border-color .35s var(--ease);
+}
+.proj-link:hover,
+.proj-link:focus-visible{ color:var(--accent); border-color:var(--accent); }
+.proj-link.is-static{ border-style:dashed; }
+.proj-link.is-static:hover{ color:var(--text-muted); border-color:var(--border-strong); }
+.proj-link svg{ width:13px; height:13px; fill:currentColor; flex-shrink:0; }
+/* No toque, os alvos sobem para 44px (WCAG 2.5.5) */
+@media (pointer:coarse){
+  .proj-link{ min-height:44px; padding:11px 13px; }
 }
 
 /* ── Section mark · "// LABEL" com dot pulsante ───────────── */
@@ -634,7 +749,6 @@ section[data-screen-label="06 Contato"]::before     { animation-delay: 10.4s; }
 @media (max-width: 760px){
   .proj-grid{grid-template-columns: 1fr !important;}
   .dep-grid{grid-template-columns: 1fr !important;}
-  nav ul{ gap:20px !important; padding-left:12px; }
   .scroll-cue{ display:none !important; }
 }
 @media (max-width: 680px){

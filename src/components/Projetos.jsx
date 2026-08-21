@@ -1,6 +1,12 @@
 import React from 'react';
 import { PROJECTS } from '../data.js';
-import { Reveal, SectionNumber, SectionEyebrow, Tag, Meta } from './primitives.jsx';
+import { Reveal, SectionNumber, SectionEyebrow, Tag, Meta, useScrollLock, useFocusTrap } from './primitives.jsx';
+
+const GithubMark = () => (
+  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+    <path d="M12 .5C5.37.5 0 5.87 0 12.5c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58 0-.29-.01-1.05-.02-2.06-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.34-5.47-5.96 0-1.32.47-2.39 1.24-3.23-.12-.31-.54-1.53.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6.01 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.65.24 2.87.12 3.18.77.84 1.24 1.91 1.24 3.23 0 4.63-2.8 5.65-5.48 5.95.43.37.81 1.1.81 2.22 0 1.6-.01 2.89-.01 3.28 0 .32.22.7.83.58A12.01 12.01 0 0 0 24 12.5C24 5.87 18.63.5 12 .5z" />
+  </svg>
+);
 
 function ProjectCard({ project, onOpen }) {
   const [hover, setHover] = React.useState(false);
@@ -96,23 +102,41 @@ function ProjectCard({ project, onOpen }) {
         {project.tools.slice(0, 4).map((t) => <Tag key={t}>{t}</Tag>)}
       </div>
 
-      <div style={{
-        marginTop: 20, paddingTop: 18, borderTop: '1px solid var(--border)',
-        display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-      }}>
-        <span style={{
-          fontFamily: 'var(--sans)', fontWeight: 500, fontSize: 11,
-          letterSpacing: '.22em', textTransform: 'uppercase',
-          color: hover ? 'var(--accent)' : 'var(--text)',
-          transition: 'color .4s var(--ease)',
-        }}>Ver detalhes</span>
-        <span style={{
-          fontSize: 18,
-          display: 'inline-block',
-          color: hover ? 'var(--accent)' : 'var(--text-muted)',
-          transform: hover ? 'translateX(6px)' : 'none',
-          transition: 'color .4s var(--ease), transform .5s var(--ease)',
-        }}>→</span>
+      <div className="proj-foot">
+        {/* O <button> é o gatilho acessível: um tab stop por card, Enter/Espaço
+            nativos e foco visível. O clique no article segue valendo p/ mouse. */}
+        <button
+          type="button"
+          className="proj-cta"
+          aria-label={`Estudo de caso: ${project.title}`}
+          onClick={(e) => { e.stopPropagation(); onOpen(project); }}>
+          <span>Estudo de caso</span>
+          <span className="proj-cta-arrow" aria-hidden="true">→</span>
+        </button>
+
+        <div className="proj-links">
+          {project.repoUrl && (
+            <a href={project.repoUrl} className="proj-link"
+              target="_blank" rel="noreferrer noopener"
+              onClick={(e) => e.stopPropagation()}
+              aria-label={`Código no GitHub: ${project.title}`}>
+              <GithubMark /><span>GitHub</span>
+            </a>
+          )}
+          {project.liveUrl && (
+            <a href={project.liveUrl} className="proj-link"
+              target="_blank" rel="noreferrer noopener"
+              onClick={(e) => e.stopPropagation()}
+              aria-label={`Abrir ao vivo: ${project.title}`}>
+              <span aria-hidden="true">↗</span><span>Ao vivo</span>
+            </a>
+          )}
+          {project.confidential && !project.repoUrl && (
+            <span className="proj-link is-static">
+              <span aria-hidden="true">●</span><span>Sem link público</span>
+            </span>
+          )}
+        </div>
       </div>
     </article>
   );
@@ -135,25 +159,23 @@ function ModalSection({ num, title, children }) {
 }
 
 function ProjectModal({ project, onClose }) {
-  React.useEffect(() => {
-    if (!project) return;
-    const onKey = (e) => { if (e.key === 'Escape') onClose(); };
-    document.body.style.overflow = 'hidden';
-    window.addEventListener('keydown', onKey);
-    return () => {
-      document.body.style.overflow = '';
-      window.removeEventListener('keydown', onKey);
-    };
-  }, [project, onClose]);
+  const cardRef = React.useRef(null);
+  const titleId = `proj-title-${project.id}`;
 
-  if (!project) return null;
+  useScrollLock(true);
+  // Foca o botão fechar ao abrir, prende o Tab no diálogo e devolve o foco
+  // ao card que abriu quando desmonta.
+  useFocusTrap(cardRef, true, '.modal-close');
+
+  React.useEffect(() => {
+    const onKey = (e) => { if (e.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [onClose]);
 
   return (
     <div
       onClick={onClose}
-      role="dialog"
-      aria-modal="true"
-      aria-label={project.title}
       style={{
         position: 'fixed', inset: 0, zIndex: 200,
         background: 'rgba(8,8,8,0.78)',
@@ -165,8 +187,12 @@ function ProjectModal({ project, onClose }) {
         animation: 'fadeMod .35s var(--ease)',
       }}>
       <div
+        ref={cardRef}
         onClick={(e) => e.stopPropagation()}
         className="modal-scroll modal-card"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
         style={{
           width: '100%', maxWidth: 880,
           background: 'var(--bg)',
@@ -200,7 +226,7 @@ function ProjectModal({ project, onClose }) {
           {project.category} · {project.date}
         </div>
 
-        <h2 style={{
+        <h2 id={titleId} style={{
           marginTop: 12,
           fontFamily: 'var(--serif)', fontWeight: 700,
           fontSize: 'clamp(32px, 4.4vw, 48px)', lineHeight: 1.05,
@@ -351,7 +377,7 @@ export default function Projetos() {
         </div>
       </div>
 
-      <ProjectModal project={active} onClose={close} />
+      {active && <ProjectModal project={active} onClose={close} />}
     </section>
   );
 }
