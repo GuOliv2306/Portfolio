@@ -1,4 +1,5 @@
 import React from 'react';
+import { Analytics } from '@vercel/analytics/react';
 import { CursorFollower } from './components/primitives.jsx';
 import { sectionTop, scrollToSection } from './nav.js';
 import { SECTIONS } from './data.js';
@@ -66,6 +67,8 @@ export default function App() {
         <Contato />
       </main>
       <SystemBar />
+      {/* Web Analytics da Vercel — contagem de visitas sem cookies. */}
+      <Analytics />
     </>
   );
 }

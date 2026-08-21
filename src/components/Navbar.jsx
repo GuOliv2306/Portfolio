@@ -9,7 +9,7 @@ const NUM_BY_ID = Object.fromEntries(SECTIONS.map((s) => [s.id, s.num]));
 
 // Mesmo limiar do CSS (.nav-toggle / .nav-links). Acima dele o painel nunca
 // deve ficar aberto — daí o listener de breakpoint.
-const MOBILE_QUERY = '(max-width: 760px)';
+const MOBILE_QUERY = '(max-width: 900px)';
 
 export default function Navbar() {
   const scrolled = useScrollValue(selScrolled);
@@ -59,6 +59,9 @@ export default function Navbar() {
     }}>
       <div className="container" style={{
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        // O gap é o piso da distância entre a marca e a faixa de links:
+        // space-between sozinho colapsa para zero quando a linha enche.
+        gap: 32,
         height: 72,
         position: 'relative', zIndex: 2, // a barra pinta acima do painel
       }}>
@@ -76,8 +79,10 @@ export default function Navbar() {
             }} />
             <span className="nav-brand">Gustavo Oliveira</span>
           </a>
+          {/* Só "ONLINE": o "SYS_v2" já aparece por extenso na sysbar do
+              rodapé, e cada caractere aqui custa espaço da faixa de links. */}
           <span className="nav-item nav-chip" style={{ animationDelay: '160ms' }}>
-            <StatusChip>SYS_v2 · ONLINE</StatusChip>
+            <StatusChip>ONLINE</StatusChip>
           </span>
         </div>
 

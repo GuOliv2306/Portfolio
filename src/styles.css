@@ -144,7 +144,9 @@ button{font:inherit;background:none;border:none;color:inherit;cursor:pointer}
   display:inline-block;
   padding-bottom:6px;
   font-family:var(--sans); font-weight:500; font-size:var(--fs-label);
-  letter-spacing:.22em; text-transform:uppercase;
+  /* .2em × 12px reproduz o mesmo espaçamento absoluto que .22em × 11px
+     tinha antes do piso de tipografia — o desenho não muda, a linha cabe. */
+  letter-spacing:.2em; text-transform:uppercase;
   color:var(--text-muted);
   white-space:nowrap;
   transition: color .4s var(--ease);
@@ -274,11 +276,15 @@ section{position:relative}
 }
 /* A marca nunca encolhe; a faixa de links rola em vez de sobrepor —
    assim o nav sobrevive a qualquer largura de fonte (inclusive fallback).
-   Abaixo de 760px a faixa some inteira e dá lugar ao painel colapsável. */
+   Abaixo de 900px a faixa some inteira e dá lugar ao painel colapsável.
+   O orçamento é apertado: o .container trava em 1040px (944px úteis) em
+   qualquer viewport, então a barra tem largura fixa para preencher — os
+   valores abaixo foram medidos para sobrar folga até com a fonte de
+   fallback, que é ~2,5% mais larga que a IBM Plex. */
 .nav-left{ flex-shrink:0; }
 .nav-links{
   display:flex;
-  gap:34px;
+  gap:30px;
   list-style:none;
   min-width:0;
   overflow-x:auto;
@@ -292,7 +298,7 @@ section{position:relative}
 .nav-toggle{ display:none; }
 .nav-panel{ display:none; }
 
-@media (max-width:760px){
+@media (max-width:900px){
   .nav-links{ display:none; }
   .nav-toggle{
     display:inline-flex; align-items:center; gap:12px;
@@ -508,6 +514,8 @@ section{position:relative}
   transition: border-color .4s var(--ease), color .4s var(--ease);
 }
 .chip-sys:hover{ border-color:var(--border-strong); color:var(--text); }
+/* Na barra o chip divide 944px com a marca e cinco links — tracking curto. */
+.nav-chip .chip-sys{ letter-spacing:.2em; }
 .chip-sys .bracket{ color:var(--text-soft); }
 .dot-live{
   display:inline-block;
@@ -584,6 +592,11 @@ section{position:relative}
 }
 @media (max-width:1180px){
   .siderail{ display:none; }
+}
+/* O chip é o item de menor prioridade da barra: o status que ele mostra já
+   fica permanente na sysbar do rodapé. Some antes que a faixa de links
+   precise apertar — abaixo de 1024px o .container já não tem folga. */
+@media (max-width:1024px){
   .nav-chip{ display:none !important; }
 }
 
